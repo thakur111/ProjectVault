@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Get customized and ready-made college project solutions in 48 hours. Source code, IEEE reports, PPTs, IoT kits, and developer support for final year engineering students.">
+    <title>ProjectVault | College Project Solutions, IoT Kits & IEEE Documentation</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/919876543210?text=Hey%20ProjectVault,%20I%27m%20looking%20for%20help%20with%20my%20college%20project.%20Can%20you%20please%20share%20some%20details?" 
+       class="whatsapp-float" target="_blank" rel="noopener noreferrer" id="whatsappFloat" aria-label="Chat on WhatsApp">
+        <i data-lucide="message-square" class="whatsapp-icon"></i>
+        <span class="whatsapp-pulse"></span>
+    </a>
+
+    <!-- Navigation -->
+    <header class="navbar-wrapper" id="navbar">
+        <div class="container navbar-container">
+            <a href="#" class="logo">
+                <div class="logo-icon-wrapper">
+                    <i data-lucide="database" class="logo-icon"></i>
+                </div>
+                <span class="logo-text">Project<span>Vault</span></span>
+            </a>
+            
+            <nav class="nav-menu" id="navMenu">
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+                <a href="#categories" class="nav-link">Domains</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+                <a href="#testimonials" class="nav-link">Reviews</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+                <a href="https://wa.me/919876543210?text=Hey%20ProjectVault,%20I%20want%20to%20get%20started%20on%20my%20project." 
+                   class="btn btn-primary nav-cta-mobile" target="_blank" rel="noopener noreferrer">Get Started</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="https://wa.me/919876543210?text=Hey%20ProjectVault,%20I%20want%20to%20get%20started%20on%20my%20project." 
+                   class="btn btn-primary nav-cta" target="_blank" rel="noopener noreferrer">Get Started</a>
+                <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Menu">
+                    <i data-lucide="menu" id="menuIcon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section" id="hero">
+            <div class="hero-bg-glow"></div>
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <div class="badge-trust">
+                        <i data-lucide="shield-check" class="badge-icon"></i>
+                        <span>100% Verified & Running Projects</span>
+                    </div>
+                    <h1 class="hero-title">
+                        Get Custom & Ready-Made <br>
+                        <span class="text-gradient">College Projects</span> in 48 Hours
+                    </h1>
+                    <p class="hero-subtitle">
+                        Premium Source Code, IoT Hardware Kits, IEEE Documentation, and 1-on-1 Presentation training to score A+ in your final year examinations.
+                    </p>
+
+                    <!-- Search Bar -->
+                    <div class="search-box-wrapper">
+                        <div class="search-bar">
+                            <i data-lucide="search" class="search-icon"></i>
+                            <input type="text" id="projectSearch" placeholder="Search projects (e.g. Smart Irrigation, Face Attendance, AI Chatbot...)" autocomplete="off">
+                            <button class="btn btn-primary btn-search" id="searchBtn">Search</button>
+                        </div>
+                        <div class="search-suggestions" id="searchSuggestions">
+                            <!-- Populated via Javascript -->
+                        </div>
+                    </div>
+
+                    <div class="hero-popular-tags">
+                        <span>Popular:</span>
+                        <button class="tag-search">Smart Agriculture</button>
+                        <button class="tag-search">AI Health Assistant</button>
+                        <button class="tag-search">Blockchain Voting</button>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper purple">
+                            <i data-lucide="folder-git-2"></i>
+                        </div>
+                        <div class="stat-value">500+</div>
+                        <div class="stat-label">Project Titles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper blue">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <div class="stat-value">2,400+</div>
+                        <div class="stat-label">Students Helped</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper cyan">
+                            <i data-lucide="zap"></i>
+                        </div>
+                        <div class="stat-value">48 Hrs</div>
+                        <div class="stat-label">Average Delivery</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon-wrapper gold">
+                            <i data-lucide="star"></i>
+                        </div>
+                        <div class="stat-value">4.9/5</div>
+                        <div class="stat-label">Student Rating</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section class="services-section" id="services">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Our Offerings</span>
+                    <h2 class="section-title">End-to-End Solutions for Final Year Success</h2>
+                    <p class="section-subtitle">We don't just send code. We deliver everything required to ace your project submission and impress external examiners.</p>
+                </div>
+
+                <div class="services-grid">
+                    <!-- Service 1 -->
+                    <div class="service-card">
+                        <div class="service-icon"><i data-lucide="code-xml"></i></div>
+                        <h3>Source Code</h3>
+                        <p>Production-grade, fully commented code. Available in Python, Java, Node.js, React, Android, and Flutter. Zero errors guaranteed.</p>
+                    </div>
+                    <!-- Service 2 -->
+                    <div class="service-card">
+                        <div class="service-icon"><i data-lucide="cpu"></i></div>
+                        <h3>Plug & Play IoT Kits</h3>
+                        <p>Fully assembled and tested hardware kits. Includes custom circuit diagrams, sensor calibration, and component testing.</p>
+                    </div>
+                    <!-- Service 3 -->
+                    <div class="service-card">
+                        <div class="service-icon"><i data-lucide="file-text"></i></div>
+                        <h3>Documentation</h3>
+                        <p>Complete IEEE-format project reports (80+ pages). Includes abstract, system architecture, UML design, and setup guides.</p>
+                    </div>
+                    <!-- Service 4 -->
+                    <div class="service-card">
+                        <div class="service-icon"><i data-lucide="monitor-play"></i></div>
+                        <h3>Presentation PPT</h3>
+                        <p>High-converting presentation slide decks covering methodologies, data flows, UI layouts, and potential examiner Q&As.</p>
+                    </div>
+                    <!-- Service 5 -->
+                    <div class="service-card">
+                        <div class="service-icon"><i data-lucide="globe"></i></div>
+                        <h3>Cloud Deployment</h3>
+                        <p>Live deployment of your web/mobile app on platforms like AWS, Vercel, or Firebase for easy demonstration to examiners.</p>
+                    </div>
+                    <!-- Service 6 -->
+                    <div class="service-card">
+                        <div class="service-icon"><i data-lucide="graduation-cap"></i></div>
+                        <h3>Viva & Code Training</h3>
+                        <p>1-on-1 virtual sessions explaining block-by-block code structure and logic to prep you for viva voice exams.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works-section" id="how-it-works">
+            <div class="container how-container">
+                <div class="how-content">
+                    <span class="section-tag">Simple Process</span>
+                    <h2 class="section-title">From Order to Submission in 3 Simple Steps</h2>
+                    <p class="section-subtitle">A seamless journey designed to eliminate college submission stress.</p>
+
+                    <div class="steps-list">
+                        <div class="step-item">
+                            <div class="step-number">01</div>
+                            <div class="step-details">
+                                <h3>Select Your Domain & Project</h3>
+                                <p>Choose from our catalog of 500+ pre-verified projects or request a custom topic from our engineering experts.</p>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-number">02</div>
+                            <div class="step-details">
+                                <h3>Review Demo & Confirm</h3>
+                                <p>Watch a video demonstration or access a live testing environment. Once satisfied, select your pricing package.</p>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-number">03</div>
+                            <div class="step-details">
+                                <h3>Get Delivered & Get Trained</h3>
+                                <p>Get files in 48 hours. Schedule a deployment call where we setup the environment and walk you through code execution.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terminal Simulator (Student Trust Component) -->
+                <div class="terminal-wrapper">
+                    <div class="terminal-header">
+                        <div class="terminal-buttons">
+                            <span class="dot close"></span>
+                            <span class="dot minimize"></span>
+                            <span class="dot expand"></span>
+                        </div>
+                        <div class="terminal-title">order-tracker.sh</div>
+                    </div>
+                    <div class="terminal-body" id="terminalBody">
+                        <!-- Filled by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Categories / Domains Section -->
+        <section class="categories-section" id="categories">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Explore Collections</span>
+                    <h2 class="section-title">Find the Perfect Project for Your Domain</h2>
+                    <p class="section-subtitle">Click on any domain to explore popular, high-scoring project titles that examiners love.</p>
+                </div>
+
+                <!-- Category Badges Slider/Grid -->
+                <div class="category-tabs" id="categoryTabs">
+                    <button class="tab-btn active" data-domain="all">All Projects</button>
+                    <button class="tab-btn" data-domain="iot">IoT & Hardware <span class="badge">92</span></button>
+                    <button class="tab-btn" data-domain="ai-ml">AI & ML <span class="badge">124</span></button>
+                    <button class="tab-btn" data-domain="web">Web Apps <span class="badge">115</span></button>
+                    <button class="tab-btn" data-domain="android">Android/iOS <span class="badge">76</span></button>
+                    <button class="tab-btn" data-domain="cyber">Cybersecurity <span class="badge">48</span></button>
+                    <button class="tab-btn" data-domain="blockchain">Blockchain <span class="badge">35</span></button>
+                    <button class="tab-btn" data-domain="cloud">Cloud Computing <span class="badge">42</span></button>
+                </div>
+
+                <!-- Showcase Grid -->
+                <div class="project-showcase-grid" id="projectShowcase">
+                    <!-- Populated via Javascript -->
+                </div>
+                
+                <div class="custom-request-box">
+                    <div class="custom-text">
+                        <h4>Have a unique custom project topic in mind?</h4>
+                        <p>Tell us your specific requirement, and our developers will build it for you from scratch.</p>
+                    </div>
+                    <a href="https://wa.me/919876543210?text=Hey%20ProjectVault,%20I%20have%20a%20custom%20project%20idea%20in%20mind.%20Can%20we%20discuss?" 
+                       class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Discuss Custom Topic</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section class="pricing-section" id="pricing">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Fair Pricing</span>
+                    <h2 class="section-title">Simple, Budget-Friendly Pricing Tiers</h2>
+                    <p class="section-subtitle">Choose a package that fits your needs. No hidden fees. Tailored for student budgets.</p>
+                </div>
+
+                <div class="pricing-grid">
+                    <!-- Basic Tier -->
+                    <div class="pricing-card">
+                        <div class="card-tier">Basic Code Only</div>
+                        <div class="price">
+                            <span class="currency">₹</span>
+                            <span class="amount">999</span>
+                        </div>
+                        <p class="price-desc">Perfect if you only need the working source code files and want to handle configuration yourself.</p>
+                        <hr class="pricing-divider">
+                        <ul class="pricing-features">
+                            <li><i data-lucide="check" class="icon-check"></i> Complete Clean Source Code</li>
+                            <li><i data-lucide="check" class="icon-check"></i> Database Export Script (.sql)</li>
+                            <li><i data-lucide="check" class="icon-check"></i> Setup Text Guide (Readme.md)</li>
+                            <li><i data-lucide="check" class="icon-check"></i> 100% Compile Guarantee</li>
+                            <li class="disabled"><i data-lucide="x" class="icon-x"></i> IEEE Format Project Report</li>
+                            <li class="disabled"><i data-lucide="x" class="icon-x"></i> PPT Slides Presentation</li>
+                            <li class="disabled"><i data-lucide="x" class="icon-x"></i> Direct Zoom/Teams Setup Support</li>
+                        </ul>
+                        <button class="btn btn-outline btn-full btn-checkout-trigger" data-pricing-tier="basic">Order Basic</button>
+                    </div>
+
+                    <!-- Recommended Tier -->
+                    <div class="pricing-card recommended">
+                        <div class="badge-recommended">Most Popular</div>
+                        <div class="card-tier">Full Bundle</div>
+                        <div class="price">
+                            <span class="currency">₹</span>
+                            <span class="amount">2,499</span>
+                        </div>
+                        <p class="price-desc">The complete package. Everything required for final year submissions without lifting a finger.</p>
+                        <hr class="pricing-divider">
+                        <ul class="pricing-features">
+                            <li><i data-lucide="check" class="icon-check"></i> Complete Clean Source Code</li>
+                            <li><i data-lucide="check" class="icon-check"></i> Database Export Script (.sql)</li>
+                            <li><i data-lucide="check" class="icon-check"></i> <strong>IEEE Report (80+ Pages)</strong></li>
+                            <li><i data-lucide="check" class="icon-check"></i> <strong>Project PPT Presentation Slides</strong></li>
+                            <li><i data-lucide="check" class="icon-check"></i> <strong>1-on-1 Remote Setup Support</strong></li>
+                            <li><i data-lucide="check" class="icon-check"></i> 2 Viva Preparation Audio Notes</li>
+                            <li><i data-lucide="check" class="icon-check"></i> Free Bug Fixes / Minor Changes</li>
+                        </ul>
+                        <button class="btn btn-primary btn-full btn-checkout-trigger" data-pricing-tier="full">Order Full Bundle</button>
+                    </div>
+
+                    <!-- Premium Custom Tier -->
+                    <div class="pricing-card">
+                        <div class="card-tier">Premium Custom</div>
+                        <div class="price">
+                            <span class="currency">₹</span>
+                            <span class="amount">4,999</span>
+                        </div>
+                        <p class="price-desc">For students demanding unique, high-end applications designed entirely from scratch.</p>
+                        <hr class="pricing-divider">
+                        <ul class="pricing-features">
+                            <li><i data-lucide="check" class="icon-check"></i> Tailor-made project implementation</li>
+                            <li><i data-lucide="check" class="icon-check"></i> Custom UI Design & Front-end</li>
+                            <li><i data-lucide="check" class="icon-check"></i> Fully formatted IEEE Documentation</li>
+                            <li><i data-lucide="check" class="icon-check"></i> Tailored PPT presentation</li>
+                            <li><i data-lucide="check" class="icon-check"></i> Direct 1-on-1 Whatsapp Developer Support</li>
+                            <li><i data-lucide="check" class="icon-check"></i> 3 Revision Rounds on Features</li>
+                            <li><i data-lucide="check" class="icon-check"></i> Plagiarism check report copy</li>
+                        </ul>
+                        <a href="https://wa.me/919876543210?text=Hey%20ProjectVault,%20I%27m%20interested%20in%20the%20Premium%20Custom%20tier%20starting%20at%20%E2%82%B94,999." 
+                           class="btn btn-outline btn-full" target="_blank" rel="noopener noreferrer">Contact Developer</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials-section" id="testimonials">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Success Stories</span>
+                    <h2 class="section-title">Trusted by Thousands of Engineering Students</h2>
+                    <p class="section-subtitle">Read how students from major technical universities secured high scores with our assistance.</p>
+                </div>
+
+                <div class="testimonials-grid">
+                    <!-- Review 1 -->
+                    <div class="testimonial-card">
+                        <div class="rating-stars">
+                            <i data-lucide="star" class="fill"></i>
+                            <i data-lucide="star" class="fill"></i>
+                            <i data-lucide="star" class="fill"></i>
+                            <i data-lucide="star" class="fill"></i>
+                            <i data-lucide="star" class="fill"></i>
+                        </div>
+                        <p class="review-text">"I was so stressed about my IoT project since our code had continuous sensor loop issues. ProjectVault delivered the corrected code, schematic diagrams, and explained the flow via WhatsApp. Examiner was super impressed during viva!"</p>
+                        <div class="student-profile">
+                            <div class="student-avatar">
+                                <span>RN</span>
+                            </div>
+                            <div class="student-info">
+                                <h4>Rahul Nair</h4>
+                                <p>B.E. Computer Science, VTU</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 2 -->
+                    <div class="testimonial-card">
+                        <div class="rating-stars">
+                            <i data-lucide="star" class="fill"></i>
+                            <i data-lucide="star" class="fill"></i>
+                            <i data-lucide="star" class="fill"></i>
+                            <i data-lucide="star" class="fill"></i>
+                            <i data-lucide="star" class="fill"></i>
+                        </div>
+                        <p class="review-text">"The IEEE report sent in the Full Bundle was incredibly thorough. 85 pages, detailed data flow diagrams, and correct UML representations. My guide approved it in one go without revisions. Absolutely worth the money."</p>
+                        <div class="student-profile">
+                            <div class="student-avatar">
+                                <span>AP</span>
+                            </div>
+                            <div class="student-info">
+                                <h4>Anjali Pillai</h4>
+                                <p>B.Tech Information Technology, Anna University</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 3 -->
+                    <div class="testimonial-card">
+                        <div class="rating-stars">
+                            <i data-lucide="star" class="fill"></i>
+                            <i data-lucide="star" class="fill"></i>
+                            <i data-lucide="star" class="fill"></i>
+                            <i data-lucide="star" class="fill"></i>
+                            <i data-lucide="star" class="fill"></i>
+                        </div>
+                        <p class="review-text">"Loved the remote setup support. The developer configured the Python dependencies, Anaconda environment, and MySQL database on my laptop via AnyDesk in 15 minutes. Best customer service!"</p>
+                        <div class="student-profile">
+                            <div class="student-avatar">
+                                <span>KR</span>
+                            </div>
+                            <div class="student-info">
+                                <h4>Karthik Reddy</h4>
+                                <p>B.Tech Electronics & Comm, JNTUH</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section" id="faq">
+            <div class="container faq-container">
+                <div class="faq-left">
+                    <span class="section-tag">Got Questions?</span>
+                    <h2 class="section-title">Frequently Asked Questions</h2>
+                    <p class="section-subtitle">Find answers to common student queries about delivery, hardware setup, viva preparation, and ethics.</p>
+                    <div class="faq-cta-box">
+                        <p>Can't find what you're looking for?</p>
+                        <a href="https://wa.me/919876543210?text=Hey%20ProjectVault,%20I%20have%20some%20questions%20regarding%20the%20projects." 
+                           class="btn btn-secondary btn-full" target="_blank" rel="noopener noreferrer">Talk to Support on WhatsApp</a>
+                    </div>
+                </div>
+
+                <div class="faq-accordions">
+                    <!-- Accordion 1 -->
+                    <div class="faq-item">
+                        <button class="faq-trigger" aria-expanded="false">
+                            <span>Is buying a college project project ethical?</span>
+                            <i data-lucide="chevron-down" class="faq-arrow"></i>
+                        </button>
+                        <div class="faq-content">
+                            <p>We provide these projects as comprehensive reference materials, educational templates, and baseline systems. We strongly encourage students to study the source code, review the diagrams, and customize the interface to understand how it operates. This acts as a powerful practical learning aid.</p>
+                        </div>
+                    </div>
+
+                    <!-- Accordion 2 -->
+                    <div class="faq-item">
+                        <button class="faq-trigger" aria-expanded="false">
+                            <span>How fast will I receive the project files?</span>
+                            <i data-lucide="chevron-down" class="faq-arrow"></i>
+                        </button>
+                        <div class="faq-content">
+                            <p>For standard project titles in our active catalog, we deliver all source files, documentation PDFs, and PPTs within 24 to 48 hours of payment. Custom build topics depend on complexity and typically take 5 to 10 working days.</p>
+                        </div>
+                    </div>
+
+                    <!-- Accordion 3 -->
+                    <div class="faq-item">
+                        <button class="faq-trigger" aria-expanded="false">
+                            <span>How does remote deployment and setup work?</span>
+                            <i data-lucide="chevron-down" class="faq-arrow"></i>
+                        </button>
+                        <div class="faq-content">
+                            <p>If you purchase the Full Bundle or Premium Custom tier, you can schedule a remote session. Our technical expert will connect to your laptop using secure tools (like AnyDesk or Zoom), install required libraries, configure databases, run the code, and show you the working app on your local machine.</p>
+                        </div>
+                    </div>
+
+                    <!-- Accordion 4 -->
+                    <div class="faq-item">
+                        <button class="faq-trigger" aria-expanded="false">
+                            <span>What happens if my college guide rejects the project?</span>
+                            <i data-lucide="chevron-down" class="faq-arrow"></i>
+                        </button>
+                        <div class="faq-content">
+                            <p>Guides often request minor modifications, such as color adjustments, layout changes, or extra report headings. We provide free revisions for 30 days post-delivery to ensure your project passes alignment reviews without issue.</p>
+                        </div>
+                    </div>
+
+                    <!-- Accordion 5 -->
+                    <div class="faq-item">
+                        <button class="faq-trigger" aria-expanded="false">
+                            <span>Do you ship hardware IoT kits to my address?</span>
+                            <i data-lucide="chevron-down" class="faq-arrow"></i>
+                        </button>
+                        <div class="faq-content">
+                            <p>Yes, IoT and Embedded project kits are completely assembled, soldered, tested, and packaged with foam support before being couriered. We ship via premium services like DTDC or BlueDart, reaching major Indian cities in 3-5 days. Tracking info will be shared.</p>
+                        </div>
+                    </div>
+
+                    <!-- Accordion 6 -->
+                    <div class="faq-item">
+                        <button class="faq-trigger" aria-expanded="false">
+                            <span>What is your refund policy?</span>
+                            <i data-lucide="chevron-down" class="faq-arrow"></i>
+                        </button>
+                        <div class="faq-content">
+                            <p>We guarantee a 100% working project demonstration. If the project files do not compile or work as shown in our initial demo video, and our developer team is unable to resolve the issue on your machine, we will issue a full refund within 3 business days.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Banner Section -->
+        <section class="cta-banner-section">
+            <div class="container">
+                <div class="cta-banner-card">
+                    <div class="cta-glow"></div>
+                    <h2>Ready to Secure Your A+ Grade?</h2>
+                    <p>Stop wasting weeks debugging lines of code or formatting reports. Let our professional engineering team handle the workload while you prepare for final exams.</p>
+                    <div class="cta-buttons">
+                        <a href="https://wa.me/919876543210?text=Hey%20ProjectVault,%20I%27d%20like%20to%20order%20a%20project%20now." 
+                           class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                            <i data-lucide="message-square"></i> Chat on WhatsApp
+                        </a>
+                        <a href="#categories" class="btn btn-outline">Browse Domains</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-wrapper">
+        <div class="container footer-grid">
+            <div class="footer-brand-col">
+                <a href="#" class="logo">
+                    <div class="logo-icon-wrapper">
+                        <i data-lucide="database" class="logo-icon"></i>
+                    </div>
+                    <span class="logo-text">Project<span>Vault</span></span>
+                </a>
+                <p class="brand-tagline">Simplifying engineering academic submissions with 100% verified, examiner-grade project bundles.</p>
+                <div class="trust-icons">
+                    <div class="trust-badge"><i data-lucide="shield-check"></i> SSL Secure</div>
+                    <div class="trust-badge"><i data-lucide="badge-check"></i> ISO Certified</div>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#services">Our Services</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#pricing">Pricing Plans</a></li>
+                    <li><a href="#testimonials">Student Reviews</a></li>
+                    <li><a href="#faq">FAQs</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Project Domains</h4>
+                <ul>
+                    <li><a href="#categories" data-domain="iot">IoT & Embedded Systems</a></li>
+                    <li><a href="#categories" data-domain="ai-ml">Artificial Intelligence & ML</a></li>
+                    <li><a href="#categories" data-domain="web">Fullstack Web Applications</a></li>
+                    <li><a href="#categories" data-domain="android">Android & Flutter Apps</a></li>
+                    <li><a href="#categories" data-domain="cyber">Cybersecurity & Cryptography</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Get in Touch</h4>
+                <p class="contact-detail"><i data-lucide="mail"></i> support@projectvault.in</p>
+                <p class="contact-detail"><i data-lucide="message-square"></i> +91 98765 43210 (WhatsApp)</p>
+                <p class="working-hours"><i data-lucide="clock"></i> Mon - Sat: 9:00 AM - 9:00 PM</p>
+            </div>
+        </div>
+
+        <div class="container footer-bottom">
+            <p>&copy; 2026 ProjectVault. All Rights Reserved. Designed as an educational aid.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Refund Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Checkout Modal Overlay -->
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="checkout-modal">
+            <button class="close-modal-btn" id="closeModal" aria-label="Close Modal">
+                <i data-lucide="x"></i>
+            </button>
+            
+            <!-- Modal Stage 1: Selection & Contact Form -->
+            <div class="modal-stage active" id="stageForm">
+                <h3 class="modal-title">Checkout</h3>
+                <p class="modal-subtitle" id="modalProjectTitle">Project Title Here</p>
+                
+                <div class="tier-selector-container">
+                    <label class="tier-option active" id="tierOptionBasic">
+                        <input type="radio" name="projectTier" value="basic" checked>
+                        <div class="tier-meta">
+                            <span class="tier-name">Basic Code Only</span>
+                            <span class="tier-price">₹999</span>
+                        </div>
+                        <p class="tier-summary">Get the complete working source code + MySQL dump file and README.</p>
+                    </label>
+                    <label class="tier-option" id="tierOptionFull">
+                        <input type="radio" name="projectTier" value="full">
+                        <div class="tier-meta">
+                            <span class="tier-name">Full Bundle (Code + Report + PPT)</span>
+                            <span class="tier-price">₹2,499</span>
+                        </div>
+                        <p class="tier-summary">Adds IEEE format 80+ page Word/PDF documentation, PPT slides, and 1-on-1 Zoom deployment support.</p>
+                    </label>
+                </div>
+                
+                <form class="checkout-form" id="checkoutForm">
+                    <div class="form-group">
+                        <label for="studentName">Full Name</label>
+                        <input type="text" id="studentName" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentEmail">Email Address (for code delivery)</label>
+                        <input type="email" id="studentEmail" placeholder="you@university.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentWhatsApp">WhatsApp Phone Number</label>
+                        <input type="tel" id="studentWhatsApp" placeholder="e.g., +91 98765 43210" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full" id="btnSubmitDetails">
+                        Proceed to Payment (<span id="submitPriceText">₹999</span>)
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Modal Stage 2: Razorpay Simulation -->
+            <div class="modal-stage" id="stagePayment">
+                <div class="razorpay-header">
+                    <div class="razorpay-logo">
+                        <i data-lucide="shield-check" class="secure-icon"></i>
+                        <span>Razorpay Checkout</span>
+                    </div>
+                    <div class="razorpay-amount" id="razorpayAmountText">₹999</div>
+                </div>
+                <div class="razorpay-body">
+                    <p class="payment-instruction">Select a payment method to simulate standard transaction flow:</p>
+                    
+                    <div class="payment-methods">
+                        <div class="pay-method-btn active" data-method="upi">
+                            <i data-lucide="smartphone"></i>
+                            <span>UPI (GPay / PhonePe / Paytm)</span>
+                        </div>
+                        <div class="pay-method-btn" data-method="card">
+                            <i data-lucide="credit-card"></i>
+                            <span>Credit / Debit Card</span>
+                        </div>
+                        <div class="pay-method-btn" data-method="net">
+                            <i data-lucide="landmark"></i>
+                            <span>Netbanking</span>
+                        </div>
+                    </div>
+                    
+                    <div class="pay-simulation-details" id="upiDetails">
+                        <input type="text" id="upiId" placeholder="student@okaxis" value="student@okaxis" style="text-align: center;">
+                    </div>
+                    
+                    <button class="btn btn-primary btn-full btn-pay" id="btnSimulatePayment">
+                        Simulate Payment of <span id="payPriceText">₹999</span>
+                    </button>
+                    
+                    <p class="secure-tagline"><i data-lucide="lock"></i> Secure 256-bit SSL Encrypted Transaction</p>
+                </div>
+            </div>
+            
+            <!-- Modal Stage 3: Payment Loading / Processing -->
+            <div class="modal-stage" id="stageProcessing" style="text-align: center; padding: 40px 0;">
+                <div class="payment-spinner"></div>
+                <h4 style="font-size: 20px; margin-top: 24px; margin-bottom: 8px;">Processing Transaction...</h4>
+                <p style="color: var(--text-secondary); font-size: 14px;">Do not close this window or click back button.</p>
+            </div>
+            
+            <!-- Modal Stage 4: Payment Success & Direct Download -->
+            <div class="modal-stage" id="stageSuccess" style="text-align: center;">
+                <div class="success-icon-wrapper">
+                    <div class="checkmark-circle">
+                        <i data-lucide="check" class="checkmark"></i>
+                    </div>
+                </div>
+                <h3 class="success-title">Payment Successful!</h3>
+                <p class="success-message">
+                    Thank you! Your transaction has been verified. You can now download your project package immediately.
+                </p>
+                
+                <div class="download-box">
+                    <div class="download-info">
+                        <i data-lucide="file-archive" class="zip-icon"></i>
+                        <div>
+                            <p class="zip-filename" id="downloadZipName">smart_irrigation_system_v1.zip</p>
+                            <p class="zip-meta" id="downloadZipMeta">ZIP File • 14.8 MB</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-full btn-download" id="btnDownloadFiles">
+                        <i data-lucide="download"></i> Download Source Code
+                    </button>
+                </div>
+                
+                <p class="email-note">
+                    An email containing the download instructions and documentation files has also been dispatched to <strong id="successEmail">student@example.com</strong>.
+                </p>
+                
+                <button class="btn btn-secondary btn-full" id="btnFinishCheckout" style="margin-top: 16px;">
+                    Close Window
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
