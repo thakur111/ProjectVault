@@ -675,4 +675,197 @@ Thank you for choosing ProjectVault!`;
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     });
+
+    // ==========================================================================
+    // AI Advisor & Recommendation Engine
+    // ==========================================================================
+    const aiAdvisorForm = document.getElementById("aiAdvisorForm");
+    const aiConsoleBody = document.getElementById("aiConsoleBody");
+    const complexityBtns = document.querySelectorAll(".complexity-btn");
+    
+    // Manage active state of complexity buttons inside the panel
+    complexityBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            complexityBtns.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            
+            // Check the hidden radio inside
+            const radio = btn.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+        });
+    });
+    
+    if (aiAdvisorForm) {
+        aiAdvisorForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            
+            // Extract values
+            const branch = document.getElementById("aiBranch").value;
+            const lang = document.getElementById("aiLang").value;
+            const keywordsText = document.getElementById("aiKeywords").value;
+            const complexity = document.querySelector('input[name="aiComplexity"]:checked').value;
+            
+            // Clean console and show running logs
+            aiConsoleBody.innerHTML = "";
+            
+            const logSteps = [
+                { text: `Initializing ProjectAI Matcher Pipeline...`, type: "log" },
+                { text: `Reading preferences: Dept: ${branch.toUpperCase()} | Lang: ${lang.toUpperCase()} | Complexity: ${complexity.toUpperCase()}`, type: "log" },
+                { text: `Querying local index files...`, type: "log" },
+                { text: `Parsing search keys for: "${keywordsText}"`, type: "log" },
+                { text: `Filtering matching titles...`, type: "thinking" }
+            ];
+            
+            let currentLogIndex = 0;
+            
+            function printLogs() {
+                if (currentLogIndex < logSteps.length) {
+                    const step = logSteps[currentLogIndex];
+                    const div = document.createElement("div");
+                    div.className = `ai-log-entry ${step.type === 'thinking' ? 'thinking' : ''}`;
+                    div.innerHTML = `<span style="color: var(--primary-light);">[AI]</span> ${step.text}`;
+                    aiConsoleBody.appendChild(div);
+                    aiConsoleBody.scrollTop = aiConsoleBody.scrollHeight;
+                    
+                    currentLogIndex++;
+                    setTimeout(printLogs, 600); // speed of logs printing
+                } else {
+                    // Logs complete, execute matching logic
+                    executeMatcher(branch, lang, keywordsText, complexity);
+                }
+            }
+            
+            printLogs();
+        });
+    }
+    
+    function executeMatcher(branch, lang, keywordsText, complexity) {
+        const keywords = keywordsText.toLowerCase().split(/[\s,]+/).filter(k => k.length > 2);
+        
+        // Match catalog projects
+        let matchedProjects = projectsData.filter(proj => {
+            let score = 0;
+            
+            // 1. Branch match
+            if (branch === "cse") {
+                if (["ai-ml", "web", "cyber", "blockchain", "cloud", "android"].includes(proj.domain)) score += 3;
+            } else if (["ece", "eee", "mech"].includes(branch)) {
+                if (proj.domain === "iot") score += 5; // highly relevant for hardware
+            }
+            
+            // 2. Language match
+            const techLower = proj.tech.toLowerCase();
+            if (lang === "python" && (techLower.includes("python") || techLower.includes("flask") || techLower.includes("tensorflow"))) score += 4;
+            if (lang === "javascript" && (techLower.includes("react") || techLower.includes("node") || techLower.includes("express") || techLower.includes("mongodb"))) score += 4;
+            if (lang === "cpp" && (techLower.includes("esp32") || techLower.includes("nodemcu") || techLower.includes("c++"))) score += 4;
+            if (lang === "java" && (techLower.includes("java") || techLower.includes("android studio"))) score += 4;
+            
+            // 3. Keywords match
+            const titleLower = proj.title.toLowerCase();
+            const descLower = proj.desc.toLowerCase();
+            keywords.forEach(word => {
+                if (titleLower.includes(word) || descLower.includes(word) || techLower.includes(word)) {
+                    score += 5; // high weight for keyword matches
+                }
+            });
+            
+            // 4. Complexity match
+            if (proj.difficulty === complexity) score += 2;
+            
+            proj._aiScore = score;
+            // Return only projects that have a basic affinity (score > 4) or keyword matches
+            return score > 4;
+        });
+        
+        // Sort by match score descending
+        matchedProjects.sort((a, b) => b._aiScore - a._aiScore);
+        
+        // Clear thinking log and print final status
+        aiConsoleBody.innerHTML += `<div class="ai-log-entry success"><span style="color: #22c55e;">[AI]</span> Recommendation matching analysis complete!</div>`;
+        
+        // Render results
+        if (matchedProjects.length > 0) {
+            const topProjects = matchedProjects.slice(0, 2); // Show top 2 matches
+            
+            topProjects.forEach(proj => {
+                const matchPct = Math.min(65 + (proj._aiScore * 5), 98); // calculate mock match percentage
+                
+                const recCard = document.createElement("div");
+                recCard.className = "ai-recommendation-card";
+                recCard.innerHTML = `
+                    <div class="ai-rec-header">
+                        <span class="ai-rec-tag catalog">Catalog Match</span>
+                        <span class="ai-rec-match">${matchPct}% AI Match</span>
+                    </div>
+                    <div class="ai-rec-title">${proj.title}</div>
+                    <div class="ai-rec-desc">${proj.desc}</div>
+                    <div class="ai-rec-footer">
+                        <span class="ai-rec-tech">${proj.tech}</span>
+                        <button class="btn btn-primary btn-pay ai-rec-btn btn-checkout-trigger" data-project-id="${proj.id}">
+                            Get Project (${proj.price})
+                        </button>
+                    </div>
+                `;
+                aiConsoleBody.appendChild(recCard);
+            });
+        }
+        
+        // GENERATE A CUSTOM GENERATIVE PROJECT (Advanced AI Title Generator Feature)
+        // This generates a custom title based on their keywords and branch and builds dynamic card!
+        const cleanKeyword = keywords.length > 0 ? keywords[0].charAt(0).toUpperCase() + keywords[0].slice(1) : "Smart Core";
+        
+        let genTitle = "";
+        let genTech = "";
+        let genDesc = "";
+        
+        if (branch === "cse") {
+            if (lang === "python") {
+                genTitle = `AI-Powered ${cleanKeyword} Prediction & Diagnostic System`;
+                genTech = "Python, Flask, PyTorch, Pandas, Scikit-Learn";
+                genDesc = `An advanced intelligence system utilizing deep learning neural networks to analyze ${cleanKeyword.toLowerCase()} patterns, creating predictive diagnostics and real-time visual dashboard metrics.`;
+            } else if (lang === "javascript") {
+                genTitle = `Decentralized ${cleanKeyword} Management Platform`;
+                genTech = "React.js, Node.js, Express, MongoDB, Web3.js";
+                genDesc = `A fully secure, enterprise-grade cloud portal enabling real-time authentication, automated schema mapping, and cryptographic logging of ${cleanKeyword.toLowerCase()} records.`;
+            } else {
+                genTitle = `Cloud-Integrated ${cleanKeyword} Optimization Engine`;
+                genTech = "Python, AWS Lambda, React, DynamoDB, API Gateway";
+                genDesc = `A modern serverless web portal built to aggregate and optimize ${cleanKeyword.toLowerCase()} streams with low-latency visual analytics.`;
+            }
+        } else {
+            // ECE/EEE/MECH IoT
+            genTitle = `IoT-Based ${cleanKeyword} Monitoring & Control System`;
+            genTech = "ESP32, C++, Relays, MQTT Protocol, Blynk Dashboard";
+            genDesc = `A comprehensive hardware solution featuring custom calibrated sensor arrays, automated relays, and ESP32 Blynk triggers to manage and secure ${cleanKeyword.toLowerCase()} environments.`;
+        }
+        
+        // Format WhatsApp URL specifically for this generated title
+        const waGenMsg = encodeURIComponent(`Hey ProjectVault, your AI Matcher generated a custom project for me: "${genTitle}" (Tech: ${genTech}). I'm interested in the Basic/Full package. Let's discuss building it!`);
+        const waGenUrl = `https://wa.me/919876543210?text=${waGenMsg}`;
+        
+        const genCard = document.createElement("div");
+        genCard.className = "ai-recommendation-card custom-gen";
+        genCard.innerHTML = `
+            <div class="ai-rec-header">
+                <span class="ai-rec-tag custom">Custom AI Generated</span>
+                <span class="ai-rec-match" style="color: var(--secondary-light);">Tailored Topic</span>
+            </div>
+            <div class="ai-rec-title">${genTitle}</div>
+            <div class="ai-rec-desc">${genDesc}</div>
+            <div class="ai-rec-footer">
+                <span class="ai-rec-tech">${genTech}</span>
+                <a href="${waGenUrl}" class="btn btn-outline ai-rec-btn" target="_blank" rel="noopener noreferrer">
+                    <i data-lucide="message-square"></i> Discuss Build
+                </a>
+            </div>
+        `;
+        
+        // Brief typing/loading delay for generative output to feel real
+        setTimeout(() => {
+            aiConsoleBody.innerHTML += `<div class="ai-log-entry success"><span style="color: var(--secondary-light);">[AI]</span> Generative topic compilation successful! Custom title compiled.</div>`;
+            aiConsoleBody.appendChild(genCard);
+            aiConsoleBody.scrollTop = aiConsoleBody.scrollHeight;
+            if (window.lucide) window.lucide.createIcons();
+        }, 1200);
+    }
 });
