@@ -841,7 +841,7 @@ Thank you for choosing ProjectVault!`;
         
         // Format WhatsApp URL specifically for this generated title
         const waGenMsg = encodeURIComponent(`Hey ProjectVault, your AI Matcher generated a custom project for me: "${genTitle}" (Tech: ${genTech}). I'm interested in the Basic/Full package. Let's discuss building it!`);
-        const waGenUrl = `https://wa.me/919876543210?text=${waGenMsg}`;
+        const waGenUrl = `https://wa.me/917026387931?text=${waGenMsg}`;
         
         const genCard = document.createElement("div");
         genCard.className = "ai-recommendation-card custom-gen";

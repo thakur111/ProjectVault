@@ -48,6 +48,6 @@ Then visit **`http://localhost:8080`** in your web browser.
 
 ## ⚙️ Configuration & Customization
 
-- **Change WhatsApp Target Number:** Search for `919876543210` in `index.html` and `script.js` and replace it with your active business phone number.
+- **Change WhatsApp Target Number:** Search for `917026387931` in `index.html` and `script.js` and replace it with your active business phone number.
 - **Add New Projects to Catalog:** Open the `projectsData` array in `script.js` and add project records following the schema structure. The autocomplete index and domain tags will update automatically!
 - **Edit Brand details:** Swap `ProjectVault` in the logo section of `index.html` to reflect your custom agency name.
