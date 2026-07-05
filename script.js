@@ -899,63 +899,22 @@ Thank you for choosing ProjectVault!`;
             targetMouseY = e.clientY;
         });
 
-        // Initialize particles in a 3D Spiral Galaxy Structure
+        // Initialize particles
         const particles = [];
-        const particleCount = 650; // High star density
+        const particleCount = 550; // Ultra high particle density
         const focalLength = 320;
-        const arms = 3;
 
         function initParticles() {
             particles.length = 0;
-            // Get galaxy scale based on window size
-            const maxRadius = Math.max(width, height) * 0.75;
-
             for (let i = 0; i < particleCount; i++) {
-                // Skew star distribution towards galactic core
-                const distance = Math.pow(Math.random(), 2.0) * maxRadius;
-                const armAngle = (i % arms) * ((Math.PI * 2) / arms);
-                const spiralFactor = 0.004; // Tightness of spiral wrapping
-                const angle = armAngle + distance * spiralFactor + (Math.random() - 0.5) * 0.28;
-
-                // 3D placement: X-Z plane forms galaxy disk, Y height is disk thickness
-                const x = Math.cos(angle) * distance;
-                const z = Math.sin(angle) * distance;
-                // Core is thickest; edges are thin
-                const thickness = 65 * (1 - distance / maxRadius);
-                const y = (Math.random() - 0.5) * thickness;
-
-                // Speed profile: Inner stars orbit faster than outer stars (orbital mechanics simulation)
-                const speedFactor = 0.001 + (1 - distance / maxRadius) * 0.0015;
-
-                // Assign cosmic color themes (core white/yellow, arms magenta/cyan/purple)
-                let rgbStr = "6, 182, 212"; // Cyan
-                let isCore = false;
-
-                if (distance < maxRadius * 0.12) {
-                    rgbStr = "253, 244, 255"; // Warm hot-white core
-                    isCore = true;
-                } else {
-                    const randCol = Math.random();
-                    if (randCol < 0.42) {
-                        rgbStr = "168, 85, 247"; // Purple/Indigo
-                    } else if (randCol < 0.84) {
-                        rgbStr = "236, 72, 153"; // Pink/Magenta
-                    } else {
-                        rgbStr = "6, 182, 212"; // Cyan
-                    }
-                }
-
                 particles.push({
-                    x: x,
-                    y: y,
-                    z: z,
-                    distance: distance,
-                    angle: angle,
-                    rotationSpeed: speedFactor,
-                    radius: isCore ? (Math.random() * 2.0 + 1.4) : (Math.random() * 1.5 + 0.8),
-                    colorRgb: rgbStr,
-                    twinkleSpeed: Math.random() * 0.04 + 0.01,
-                    twinklePhase: Math.random() * Math.PI
+                    x: (Math.random() - 0.5) * width * 1.5,
+                    y: (Math.random() - 0.5) * height * 1.5,
+                    z: (Math.random() - 0.5) * 800,
+                    radius: Math.random() * 2.0 + 1.5, // Increased dot size
+                    vx: (Math.random() - 0.5) * 0.3,
+                    vy: (Math.random() - 0.5) * 0.3,
+                    vz: (Math.random() - 0.5) * 0.3
                 });
             }
         }
@@ -987,16 +946,24 @@ Thank you for choosing ProjectVault!`;
 
             ctx.clearRect(0, 0, width, height);
 
-            // Update galaxy orbital rotation and project to 3D camera
+            // Project particles in 3D
             for (let i = 0; i < particleCount; i++) {
                 const p = particles[i];
 
-                // Slow galactic spin rotation around core
-                p.angle += p.rotationSpeed;
-                p.x = Math.cos(p.angle) * p.distance;
-                p.z = Math.sin(p.angle) * p.distance;
+                // Slow spatial drift
+                p.x += p.vx;
+                p.y += p.vy;
+                p.z += p.vz;
 
-                // 3D Rotations (mouse perspective camera tilt)
+                // Bounce boundaries in 3D box
+                const boundX = width * 0.75;
+                const boundY = height * 0.75;
+                const boundZ = 400;
+                if (Math.abs(p.x) > boundX) p.vx *= -1;
+                if (Math.abs(p.y) > boundY) p.vy *= -1;
+                if (Math.abs(p.z) > boundZ) p.vz *= -1;
+
+                // 3D Rotations
                 // Rotate around Y axis
                 let x1 = p.x * cosY - p.z * sinY;
                 let z1 = p.z * cosY + p.x * sinY;
@@ -1010,11 +977,11 @@ Thank you for choosing ProjectVault!`;
                 p.projX = x1 * scale + width / 2;
                 p.projY = y2 * scale + height / 2;
                 p.projSize = p.radius * scale;
-                p.projOpacity = Math.min(1.2, Math.max(0, scale * 0.95));
+                p.projOpacity = Math.min(1, Math.max(0, scale * 0.8));
             }
 
-            // Draw cosmic filament connections (optimized box-checks for 60fps)
-            const maxLinkDist = 60;
+            // Draw connecting lines between close neighbors (using optimized box-checks for 60fps)
+            const maxLinkDist = 70;
             const maxLinkDistSq = maxLinkDist * maxLinkDist;
 
             for (let i = 0; i < particleCount; i++) {
@@ -1032,9 +999,8 @@ Thank you for choosing ProjectVault!`;
                     const distSq = dx * dx + dy * dy;
                     if (distSq < maxLinkDistSq) {
                         const dist = Math.sqrt(distSq);
-                        // Very faint, soft gravity filaments
-                        const opacity = (1 - dist / maxLinkDist) * 0.1 * Math.min(p1.projOpacity, p2.projOpacity);
-                        ctx.strokeStyle = `rgba(168, 85, 247, ${opacity})`;
+                        const opacity = (1 - dist / maxLinkDist) * 0.22 * Math.min(p1.projOpacity, p2.projOpacity);
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${opacity})`;
                         ctx.lineWidth = 0.5;
                         ctx.beginPath();
                         ctx.moveTo(p1.projX, p1.projY);
@@ -1044,7 +1010,7 @@ Thank you for choosing ProjectVault!`;
                 }
             }
 
-            // Draw galaxy stars (gas glow + core) with twinkling
+            // Draw particles (dots) and apply mouse proximity interaction
             for (let i = 0; i < particleCount; i++) {
                 const p = particles[i];
                 if (p.projX < 0 || p.projX > width || p.projY < 0 || p.projY > height) continue;
@@ -1053,29 +1019,21 @@ Thank you for choosing ProjectVault!`;
                 const dy = p.projY - mouseY;
                 const dist = Math.sqrt(dx * dx + dy * dy);
 
-                // Twinkle cycle
-                const twinkle = Math.sin(Date.now() * p.twinkleSpeed + p.twinklePhase) * 0.35 + 0.65;
-                let opacity = p.projOpacity * twinkle * 0.85;
+                let opacity = p.projOpacity * 0.85; // Increased dot visibility
                 let size = p.projSize;
 
-                if (dist < 130) {
+                if (dist < 150) {
                     // Push particles away from cursor slightly
-                    const pushFactor = (1 - dist / 130) * 6;
+                    const pushFactor = (1 - dist / 150) * 8;
                     p.projX += (dx / dist) * pushFactor;
                     p.projY += (dy / dist) * pushFactor;
 
-                    // Increase particle glow near cursor
-                    opacity = Math.min(1.2, opacity + (1 - dist / 130) * 0.4);
+                    // Increase particle glow and size near cursor
+                    opacity = Math.min(1, opacity + (1 - dist / 150) * 0.45);
+                    size = size * (1 + (1 - dist / 150) * 0.7);
                 }
 
-                // 1. Draw outer nebular gas glow (larger, faint)
-                ctx.fillStyle = `rgba(${p.colorRgb}, ${opacity * 0.35})`;
-                ctx.beginPath();
-                ctx.arc(p.projX, p.projY, size * 2.8 > 0 ? size * 2.8 : 0.1, 0, Math.PI * 2);
-                ctx.fill();
-
-                // 2. Draw hot star core (white light, smaller)
-                ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 0.95})`;
+                ctx.fillStyle = `rgba(6, 182, 212, ${opacity})`;
                 ctx.beginPath();
                 ctx.arc(p.projX, p.projY, size > 0 ? size : 0.1, 0, Math.PI * 2);
                 ctx.fill();
