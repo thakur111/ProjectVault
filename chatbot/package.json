@@ -1,0 +1,27 @@
+{
+  "name": "projectvault-chatbot",
+  "version": "1.0.0",
+  "description": "WhatsApp Chatbot for ProjectVault - College Project Solutions Platform",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@google/genai": "^2.10.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.26.0"
+  },
+  "keywords": [
+    "whatsapp",
+    "chatbot",
+    "projectvault",
+    "esp32",
+    "ai",
+    "gemini"
+  ],
+  "author": "Antigravity",
+  "license": "ISC"
+}

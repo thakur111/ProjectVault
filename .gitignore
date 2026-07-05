@@ -1,0 +1,14 @@
+# Dependency directories
+node_modules/
+
+# Local env files
+.env
+.env.*
+
+# WhatsApp Web Auth session caches
+.wwebjs_auth/
+.wwebjs_cache/
+
+# OS metadata
+.DS_Store
+Thumbs.db

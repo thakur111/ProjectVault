@@ -868,4 +868,175 @@ Thank you for choosing ProjectVault!`;
             if (window.lucide) window.lucide.createIcons();
         }, 1200);
     }
+
+    // ==========================================================================
+    // 3D Constellation Particle Canvas Backdrop
+    // ==========================================================================
+    const canvas = document.getElementById("canvas3d");
+    if (canvas) {
+        const ctx = canvas.getContext("2d");
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        
+        canvas.width = width;
+        canvas.height = height;
+
+        window.addEventListener("resize", () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            initParticles();
+        });
+
+        let mouseX = width / 2;
+        let mouseY = height / 2;
+        let targetMouseX = width / 2;
+        let targetMouseY = height / 2;
+
+        window.addEventListener("mousemove", (e) => {
+            targetMouseX = e.clientX;
+            targetMouseY = e.clientY;
+        });
+
+        // Initialize particles
+        const particles = [];
+        const particleCount = 100;
+        const focalLength = 320;
+
+        function initParticles() {
+            particles.length = 0;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: (Math.random() - 0.5) * width * 1.5,
+                    y: (Math.random() - 0.5) * height * 1.5,
+                    z: (Math.random() - 0.5) * 800,
+                    radius: Math.random() * 1.5 + 1.2,
+                    vx: (Math.random() - 0.5) * 0.3,
+                    vy: (Math.random() - 0.5) * 0.3,
+                    vz: (Math.random() - 0.5) * 0.3
+                });
+            }
+        }
+
+        initParticles();
+
+        let angleX = 0;
+        let angleY = 0;
+        let targetAngleX = 0;
+        let targetAngleY = 0;
+
+        function loop() {
+            // Smooth mouse transition
+            mouseX += (targetMouseX - mouseX) * 0.08;
+            mouseY += (targetMouseY - mouseY) * 0.08;
+
+            // Camera tilt angles based on cursor offset
+            targetAngleY = (mouseX - width / 2) * 0.00015;
+            targetAngleX = (mouseY - height / 2) * 0.00015;
+
+            // Ease rotation angles
+            angleX += (targetAngleX - angleX) * 0.05;
+            angleY += (targetAngleY - angleY) * 0.05;
+
+            const cosX = Math.cos(angleX);
+            const sinX = Math.sin(angleX);
+            const cosY = Math.cos(angleY);
+            const sinY = Math.sin(angleY);
+
+            ctx.clearRect(0, 0, width, height);
+
+            // Project particles in 3D
+            for (let i = 0; i < particleCount; i++) {
+                const p = particles[i];
+
+                // Slow spatial drift
+                p.x += p.vx;
+                p.y += p.vy;
+                p.z += p.vz;
+
+                // Bounce boundaries in 3D box
+                const boundX = width * 0.75;
+                const boundY = height * 0.75;
+                const boundZ = 400;
+                if (Math.abs(p.x) > boundX) p.vx *= -1;
+                if (Math.abs(p.y) > boundY) p.vy *= -1;
+                if (Math.abs(p.z) > boundZ) p.vz *= -1;
+
+                // 3D Rotations
+                // Rotate around Y axis
+                let x1 = p.x * cosY - p.z * sinY;
+                let z1 = p.z * cosY + p.x * sinY;
+
+                // Rotate around X axis
+                let y2 = p.y * cosX - z1 * sinX;
+                let z2 = z1 * cosX + p.y * sinX;
+
+                // Project coordinates
+                const scale = focalLength / (focalLength + z2);
+                p.projX = x1 * scale + width / 2;
+                p.projY = y2 * scale + height / 2;
+                p.projSize = p.radius * scale;
+                p.projOpacity = Math.min(1, Math.max(0, scale * 0.8));
+            }
+
+            // Draw connecting lines between close neighbors
+            for (let i = 0; i < particleCount; i++) {
+                const p1 = particles[i];
+                if (p1.projX < 0 || p1.projX > width || p1.projY < 0 || p1.projY > height) continue;
+
+                for (let j = i + 1; j < particleCount; j++) {
+                    const p2 = particles[j];
+                    const dx = p1.projX - p2.projX;
+                    const dy = p1.projY - p2.projY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    const maxLinkDist = 120;
+                    if (dist < maxLinkDist) {
+                        const opacity = (1 - dist / maxLinkDist) * 0.12 * Math.min(p1.projOpacity, p2.projOpacity);
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${opacity})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p1.projX, p1.projY);
+                        ctx.lineTo(p2.projX, p2.projY);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Draw particles (dots) and apply mouse proximity interaction
+            for (let i = 0; i < particleCount; i++) {
+                const p = particles[i];
+                if (p.projX < 0 || p.projX > width || p.projY < 0 || p.projY > height) continue;
+
+                const dx = p.projX - mouseX;
+                const dy = p.projY - mouseY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                let opacity = p.projOpacity * 0.55;
+                let size = p.projSize;
+
+                if (dist < 150) {
+                    // Push particles away from cursor slightly
+                    const pushFactor = (1 - dist / 150) * 8;
+                    p.projX += (dx / dist) * pushFactor;
+                    p.projY += (dy / dist) * pushFactor;
+
+                    // Increase particle glow and size near cursor
+                    opacity = Math.min(1, opacity + (1 - dist / 150) * 0.45);
+                    size = size * (1 + (1 - dist / 150) * 0.7);
+                }
+
+                ctx.fillStyle = `rgba(6, 182, 212, ${opacity})`;
+                ctx.beginPath();
+                ctx.arc(p.projX, p.projY, size > 0 ? size : 0.1, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            requestAnimationFrame(loop);
+        }
+
+        // Start loop
+        loop();
+    }
 });
