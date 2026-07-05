@@ -901,7 +901,7 @@ Thank you for choosing ProjectVault!`;
 
         // Initialize particles
         const particles = [];
-        const particleCount = 220; // Increased particle density
+        const particleCount = 550; // Ultra high particle density
         const focalLength = 320;
 
         function initParticles() {
@@ -980,7 +980,10 @@ Thank you for choosing ProjectVault!`;
                 p.projOpacity = Math.min(1, Math.max(0, scale * 0.8));
             }
 
-            // Draw connecting lines between close neighbors
+            // Draw connecting lines between close neighbors (using optimized box-checks for 60fps)
+            const maxLinkDist = 70;
+            const maxLinkDistSq = maxLinkDist * maxLinkDist;
+
             for (let i = 0; i < particleCount; i++) {
                 const p1 = particles[i];
                 if (p1.projX < 0 || p1.projX > width || p1.projY < 0 || p1.projY > height) continue;
@@ -988,12 +991,15 @@ Thank you for choosing ProjectVault!`;
                 for (let j = i + 1; j < particleCount; j++) {
                     const p2 = particles[j];
                     const dx = p1.projX - p2.projX;
-                    const dy = p1.projY - p2.projY;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (Math.abs(dx) > maxLinkDist) continue; // Fast X filter
 
-                    const maxLinkDist = 120;
-                    if (dist < maxLinkDist) {
-                        const opacity = (1 - dist / maxLinkDist) * 0.18 * Math.min(p1.projOpacity, p2.projOpacity); // Increased line visibility
+                    const dy = p1.projY - p2.projY;
+                    if (Math.abs(dy) > maxLinkDist) continue; // Fast Y filter
+
+                    const distSq = dx * dx + dy * dy;
+                    if (distSq < maxLinkDistSq) {
+                        const dist = Math.sqrt(distSq);
+                        const opacity = (1 - dist / maxLinkDist) * 0.22 * Math.min(p1.projOpacity, p2.projOpacity);
                         ctx.strokeStyle = `rgba(99, 102, 241, ${opacity})`;
                         ctx.lineWidth = 0.5;
                         ctx.beginPath();
