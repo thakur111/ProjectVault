@@ -901,7 +901,7 @@ Thank you for choosing ProjectVault!`;
 
         // Initialize particles
         const particles = [];
-        const particleCount = 100;
+        const particleCount = 220; // Increased particle density
         const focalLength = 320;
 
         function initParticles() {
@@ -911,7 +911,7 @@ Thank you for choosing ProjectVault!`;
                     x: (Math.random() - 0.5) * width * 1.5,
                     y: (Math.random() - 0.5) * height * 1.5,
                     z: (Math.random() - 0.5) * 800,
-                    radius: Math.random() * 1.5 + 1.2,
+                    radius: Math.random() * 2.0 + 1.5, // Increased dot size
                     vx: (Math.random() - 0.5) * 0.3,
                     vy: (Math.random() - 0.5) * 0.3,
                     vz: (Math.random() - 0.5) * 0.3
@@ -993,7 +993,7 @@ Thank you for choosing ProjectVault!`;
 
                     const maxLinkDist = 120;
                     if (dist < maxLinkDist) {
-                        const opacity = (1 - dist / maxLinkDist) * 0.12 * Math.min(p1.projOpacity, p2.projOpacity);
+                        const opacity = (1 - dist / maxLinkDist) * 0.18 * Math.min(p1.projOpacity, p2.projOpacity); // Increased line visibility
                         ctx.strokeStyle = `rgba(99, 102, 241, ${opacity})`;
                         ctx.lineWidth = 0.5;
                         ctx.beginPath();
@@ -1013,7 +1013,7 @@ Thank you for choosing ProjectVault!`;
                 const dy = p.projY - mouseY;
                 const dist = Math.sqrt(dx * dx + dy * dy);
 
-                let opacity = p.projOpacity * 0.55;
+                let opacity = p.projOpacity * 0.85; // Increased dot visibility
                 let size = p.projSize;
 
                 if (dist < 150) {
