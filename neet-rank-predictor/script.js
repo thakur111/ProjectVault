@@ -214,7 +214,7 @@ function simulateTieBreaker(score, category, bio, chem, phy) {
 }
 
 // 7. Render functions for dashboard tabs
-document.addEventListener("DOMContentLoaded", () => {
+function initApp() {
   // Select DOM Elements
   const tabButtons = document.querySelectorAll(".nav-btn");
   const tabContents = document.querySelectorAll(".tab-content");
@@ -292,9 +292,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Close mobile nav drawer
-    if (navLinks.classList.contains("open")) {
+    if (navLinks && navLinks.classList.contains("open")) {
       navLinks.classList.remove("open");
-      menuToggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>`;
+      if (menuToggle) {
+        menuToggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>`;
+      }
+    }
+
+    // If switching to College Predictor, auto-trigger render
+    if (targetTabId === "tab-colleges") {
+      renderColleges();
     }
 
     // Scroll to top of window
@@ -469,6 +476,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (predSelectState) {
         predSelectState.value = state;
       }
+
+      // Auto-run college predictor list update
+      renderColleges();
     });
   }
 
@@ -692,32 +702,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- PERSISTENT DOCUMENTS CHECKLIST ---
   // Load local storage values
-  const savedChecklist = JSON.parse(localStorage.getItem("neetDocsChecklist")) || {};
+  let savedChecklist = {};
+  try {
+    savedChecklist = JSON.parse(localStorage.getItem("neetDocsChecklist")) || {};
+  } catch (e) {
+    console.warn("localStorage read failed, using memory fallback.", e);
+  }
 
   checklistItems.forEach((item, idx) => {
     const cb = item.querySelector("input[type='checkbox']");
     const key = `doc_${idx}`;
 
-    if (savedChecklist[key]) {
-      cb.checked = true;
-      item.classList.add("checked");
-    }
-
-    item.addEventListener("click", (e) => {
-      if (e.target !== cb) {
-        cb.checked = !cb.checked;
-      }
-      
-      if (cb.checked) {
+    if (cb) {
+      if (savedChecklist[key]) {
+        cb.checked = true;
         item.classList.add("checked");
-        savedChecklist[key] = true;
-      } else {
-        item.classList.remove("checked");
-        delete savedChecklist[key];
       }
-      
-      localStorage.setItem("neetDocsChecklist", JSON.stringify(savedChecklist));
-    });
+
+      item.addEventListener("click", (e) => {
+        if (e.target !== cb) {
+          cb.checked = !cb.checked;
+        }
+        
+        if (cb.checked) {
+          item.classList.add("checked");
+          savedChecklist[key] = true;
+        } else {
+          item.classList.remove("checked");
+          delete savedChecklist[key];
+        }
+        
+        try {
+          localStorage.setItem("neetDocsChecklist", JSON.stringify(savedChecklist));
+        } catch (e) {
+          console.warn("localStorage write failed.", e);
+        }
+      });
+    }
   });
 
   // --- ACCORDION FAQS ---
@@ -739,4 +760,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- INITIAL RENDERS ---
   renderSeatMatrix();
   renderColleges();
-});
+}
+
+// Global script load orchestrator
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initApp);
+} else {
+  initApp();
+}
