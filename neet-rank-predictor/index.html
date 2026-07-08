@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEET UG Rank Predictor & Counselling Seat Dashboard</title>
+  <meta name="description" content="Predict your NEET All India Rank (AIR), explore state-wise MBBS/BDS seat distributions, and find eligible medical colleges using this premium interactive dashboard.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header Section -->
+  <header>
+    <div class="container nav-container">
+      <div class="logo" onclick="window.location.reload();">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+        </svg>
+        <span>NEET Rank Master</span>
+      </div>
+      
+      <button class="menu-toggle" aria-label="Toggle Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <ul class="nav-links">
+        <li><button class="nav-btn active" data-tab="tab-overview">Overview</button></li>
+        <li><button class="nav-btn" data-tab="tab-predictor">Rank Predictor</button></li>
+        <li><button class="nav-btn" data-tab="tab-seats">Seat Matrix</button></li>
+        <li><button class="nav-btn" data-tab="tab-colleges">College Predictor</button></li>
+        <li><button class="nav-btn" data-tab="tab-guide">Counselling Guide</button></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Hero Block (Only visible on Overview) -->
+  <section class="hero container tab-content active" id="tab-overview">
+    <div class="badge">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+      NEET UG Counselling Companion
+    </div>
+    <h1>Predict Your Rank & Explore <br><span>Medical College Seats</span></h1>
+    <p>Analyze your NEET scorecard metrics. Predict your All India Rank (AIR) across moderate and hyper-inflation trends. Drill down into state-wide government and private seats for MBBS, BDS, and AYUSH courses.</p>
+    
+    <div class="cta-group">
+      <button class="btn btn-primary" id="hero-cta-predict">
+        Predict Your Rank
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </button>
+      <button class="btn btn-secondary" id="hero-cta-seats">
+        Explore Seat Matrix
+      </button>
+    </div>
+
+    <!-- Overview Counters -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>
+        </div>
+        <div class="stat-number">1,29,603</div>
+        <div class="stat-label">Total MBBS Seats (2026)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+        </div>
+        <div class="stat-number">27,800+</div>
+        <div class="stat-label">Dental (BDS) Seats</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <div class="stat-number">52,000+</div>
+        <div class="stat-label">AYUSH Course Seats</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <div class="stat-number">23.3 Lakh</div>
+        <div class="stat-label">Registered Candidates</div>
+      </div>
+    </div>
+
+    <!-- Brief Introduction Grid -->
+    <div class="dashboard-grid" style="margin-top: 60px; text-align: left;">
+      <div class="card">
+        <h3 class="card-title">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          Why NEET Rank Calculations Matter
+        </h3>
+        <p style="margin-bottom: 16px;">NEET UG results demonstrate massive swings in score-vs-rank outcomes from year to year. In 2024, unprecedented rank inflation was observed, with scores of 650 resulting in ranks around 26,000, whereas in 2023 a similar score yielded a rank of 7,000. These swings completely modify college cutoffs.</p>
+        <p>This dashboard is built to provide transparency. By modeling both the 2024 hyper-inflation curve and the 2023 moderate-inflation curve, you can plan conservative and optimistic admission targets safely.</p>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          Quick Checklist
+        </h3>
+        <p style="font-size: 0.9rem; color: hsl(var(--text-secondary)); margin-bottom: 20px;">Keep your document compilation status updated on the go:</p>
+        <div class="checklist-container">
+          <label class="checklist-item">
+            <input type="checkbox" disabled checked>
+            <span>NEET UG Scorecard</span>
+          </label>
+          <label class="checklist-item">
+            <input type="checkbox" disabled>
+            <span>Domicile Certificate</span>
+          </label>
+          <label class="checklist-item" style="border-color: transparent; padding: 0;">
+            <a href="#" onclick="switchTab('tab-guide'); return false;" style="font-size: 0.85rem; font-weight: 700;">View Full Documents List &rarr;</a>
+          </label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rank Predictor Section -->
+  <section class="container tab-content" id="tab-predictor">
+    <div class="dashboard-grid">
+      
+      <!-- Input Panel Card -->
+      <div class="card">
+        <h3 class="card-title">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+          Enter Score Details
+        </h3>
+        
+        <div class="slider-container">
+          <div class="score-display-wrapper">
+            <label style="margin: 0; font-size: 1.1rem;">NEET UG Score</label>
+            <div class="score-giant">600</div>
+          </div>
+          <input type="range" id="score-slider" min="100" max="720" value="600">
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: hsl(var(--text-muted)); margin-top: 8px;">
+            <span>Min (100)</span>
+            <span>Max (720)</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="score-input">Exact Score (100-720)</label>
+            <input type="number" id="score-input" min="100" max="720" value="600">
+          </div>
+          <div class="form-group">
+            <label for="category-select">Category</label>
+            <select id="category-select">
+              <option value="GEN">General (UR)</option>
+              <option value="OBC">OBC (Non-Creamy Layer)</option>
+              <option value="EWS">Economically Weaker Section</option>
+              <option value="SC">Scheduled Caste</option>
+              <option value="ST">Scheduled Tribe</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="state-select">Domicile State</label>
+          <select id="state-select">
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="Karnataka">Karnataka</option>
+            <option value="Tamil Nadu">Tamil Nadu</option>
+            <option value="Uttar Pradesh">Uttar Pradesh</option>
+            <option value="West Bengal">West Bengal</option>
+            <option value="Gujarat">Gujarat</option>
+            <option value="Rajasthan">Rajasthan</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Andhra Pradesh">Andhra Pradesh</option>
+            <option value="Telangana">Telangana</option>
+            <option value="Kerala">Kerala</option>
+            <option value="Bihar">Bihar</option>
+            <option value="Madhya Pradesh">Madhya Pradesh</option>
+            <option value="Punjab">Punjab</option>
+            <option value="Haryana">Haryana</option>
+            <option value="Odisha">Odisha</option>
+            <option value="Assam">Assam</option>
+            <option value="Chhattisgarh">Chhattisgarh</option>
+            <option value="Jharkhand">Jharkhand</option>
+            <option value="Jammu & Kashmir">Jammu & Kashmir</option>
+            <option value="Uttarakhand">Uttarakhand</option>
+            <option value="Himachal Pradesh">Himachal Pradesh</option>
+          </select>
+          <span class="form-helper">Domicile state affects your state-wise quota counselling (85% seats).</span>
+        </div>
+
+        <!-- Tie Breaker Section -->
+        <label class="toggle-switch-wrapper">
+          <span class="switch">
+            <input type="checkbox" id="tie-breaker-toggle">
+            <span class="slider"></span>
+          </span>
+          <span style="font-size: 0.9rem; font-weight: 600;">Enable Tie-Breaker Details (Optional)</span>
+        </label>
+
+        <div class="subject-marks-grid">
+          <div class="form-group">
+            <label for="bio-marks">Biology (Max 360)</label>
+            <input type="number" id="bio-marks" min="0" max="360" value="0">
+          </div>
+          <div class="form-group">
+            <label for="chem-marks">Chemistry (Max 180)</label>
+            <input type="number" id="chem-marks" min="0" max="180" value="0">
+          </div>
+          <div class="form-group">
+            <label for="phy-marks">Physics (Max 180)</label>
+            <input type="number" id="phy-marks" min="0" max="180" value="0">
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-predict" style="width: 100%; justify-content: center;">
+          Predict Rank & Admission Chance
+        </button>
+      </div>
+
+      <!-- Helper info panel -->
+      <div class="card" style="height: fit-content;">
+        <h3 class="card-title">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          How Ranks are Predicted
+        </h3>
+        <p style="font-size: 0.9rem; margin-bottom: 12px; color: hsl(var(--text-secondary));">We use smooth linear interpolation of official NTA scores and closing rank data points:</p>
+        <ul style="font-size: 0.9rem; padding-left: 20px; color: hsl(var(--text-secondary)); display: flex; flex-direction: column; gap: 8px;">
+          <li><strong>2024 Trend (High Inflation)</strong> reflects rank boundaries of the highly competitive 2024 exam.</li>
+          <li><strong>2023 Trend (Moderate Inflation)</strong> reflects conservative ranks under historical examination conditions.</li>
+          <li><strong>Tie-Breakers</strong> simulate NTA's sorting guidelines: Biology score first, then Chemistry, and finally Physics.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Output Report (Revealed after calculation) -->
+    <div class="card output-report">
+      <h3 class="card-title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        Predicted Rank Analysis Report
+      </h3>
+
+      <div class="ranks-comparison">
+        <div class="rank-pill high-inflation">
+          <div class="rank-pill-year">2024 Trend (Worst Case)</div>
+          <div class="rank-pill-value" id="rank-2024-val">--</div>
+          <div class="rank-pill-label">Estimated All India Rank (AIR)</div>
+        </div>
+        <div class="rank-pill moderate-inflation">
+          <div class="rank-pill-year">2023 Trend (Best Case)</div>
+          <div class="rank-pill-value" id="rank-2023-val">--</div>
+          <div class="rank-pill-label">Estimated All India Rank (AIR)</div>
+        </div>
+      </div>
+
+      <div class="gauge-panel">
+        <div class="gauge-container">
+          <svg class="gauge-svg" viewBox="0 0 100 100">
+            <circle class="gauge-bg" cx="50" cy="50" r="45"></circle>
+            <circle class="gauge-progress" cx="50" cy="50" r="45"></circle>
+          </svg>
+          <div class="gauge-text">--%</div>
+        </div>
+        <div id="admission-chance-text">
+          <h4 class="chance-info-title">Govt MBBS Admission Probability</h4>
+          <p style="font-size: 0.95rem; color: hsl(var(--text-secondary));">Run predictions to check government medical college seat admission viability.</p>
+        </div>
+      </div>
+
+      <div class="alert alert-info">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        <span>
+          <strong>Why the large variance?</strong> 
+          The 2024 NEET exam had a historic number of top scores, causing high rank inflation. Ranks can vary. We recommend selecting colleges based on the 2024 trend to remain safe.
+        </span>
+      </div>
+
+      <div style="text-align: center; margin-top: 24px;">
+        <button class="btn btn-secondary" onclick="switchTab('tab-colleges');">
+          Open College Predictor &rarr;
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seat Matrix Explorer Section -->
+  <section class="container tab-content" id="tab-seats">
+    <div class="card">
+      <h3 class="card-title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        State-Wise Seat Matrix Explorer
+      </h3>
+      
+      <div class="seat-controls">
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="select-course-seat">Course Type</label>
+          <select id="select-course-seat">
+            <option value="MBBS">MBBS (Medical)</option>
+            <option value="BDS">BDS (Dental)</option>
+            <option value="AYUSH">AYUSH (BAMS/BHMS/etc.)</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="select-state-seat">State Filter</label>
+          <select id="select-state-seat">
+            <option value="All">All India (States List)</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="select-type-seat">Quota Type</label>
+          <select id="select-type-seat">
+            <option value="All">All Types (Govt + Private)</option>
+            <option value="Government">Government Colleges Only</option>
+            <option value="Private">Private/Deemed Colleges Only</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="seat-search">Search State</label>
+          <div class="search-input-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="seat-search" placeholder="Type state name...">
+          </div>
+        </div>
+      </div>
+
+      <!-- Seat Matrix Table -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>State Region</th>
+              <th class="text-right">Total Colleges</th>
+              <th class="text-right">Govt Seats</th>
+              <th class="text-right">Private Seats</th>
+              <th class="text-right">Total Course Seats</th>
+            </tr>
+          </thead>
+          <tbody id="seat-table-body">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- College Predictor Section -->
+  <section class="container tab-content" id="tab-colleges">
+    <div class="card">
+      <h3 class="card-title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        Target College Predictor
+      </h3>
+      
+      <p style="font-size: 0.95rem; color: hsl(var(--text-secondary)); margin-bottom: 24px;">Filter eligible medical & dental colleges based on your All India Rank (AIR) and category. Relies on official closing ranks from previous rounds.</p>
+
+      <div class="seat-controls" style="margin-bottom: 32px;">
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="pred-rank-input">All India Rank (AIR)</label>
+          <input type="number" id="pred-rank-input" placeholder="Enter your AIR (e.g. 15000)" value="24000">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="pred-select-category">Category</label>
+          <select id="pred-select-category">
+            <option value="GEN">General (UR)</option>
+            <option value="OBC">OBC (Non-Creamy Layer)</option>
+            <option value="EWS">Economically Weaker Section</option>
+            <option value="SC">Scheduled Caste</option>
+            <option value="ST">Scheduled Tribe</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="pred-select-state">Preferred State</label>
+          <select id="pred-select-state">
+            <option value="All">All States</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="pred-select-type">College Quota</label>
+          <select id="pred-select-type">
+            <option value="All">All College Types</option>
+            <option value="Government">Government Only</option>
+            <option value="Private">Private/Deemed Only</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-filter-colleges" style="margin-bottom: 32px; width: 100%; justify-content: center;">
+        Search Matching Colleges
+      </button>
+
+      <!-- Predictor Results Container -->
+      <div class="college-list" id="college-list-container">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Counselling Guide Section -->
+  <section class="container tab-content" id="tab-guide">
+    
+    <div class="dashboard-grid">
+      <!-- Counselling Rounds Timeline -->
+      <div class="card">
+        <h3 class="card-title">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          Counselling Stages & Rounds
+        </h3>
+        
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-time">Round 1 (July - August)</div>
+            <div class="timeline-title">Registration & Choice Filling</div>
+            <div class="timeline-desc">First stage of AIQ and State counselling. Candidates submit choices. Seat allotment is published. Upgradable choice is allowed in subsequent rounds.</div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-time">Round 2 (August - September)</div>
+            <div class="timeline-title">Upgraded Allocations</div>
+            <div class="timeline-desc">Mandatory locking of choices for vacant seats. Candidates who selected upgrade are re-allotted seats based on rank priority. Free exit policies expire.</div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-time">Round 3 / Mop-up Round (September)</div>
+            <div class="timeline-title">Mop-Up Allocations</div>
+            <div class="timeline-desc">Residual seats from Round 2 are compiled. Fresh choice locking is executed. If a seat is allocated, resignation is not allowed under normal circumstances.</div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-time">Stray Vacancy Round (October)</div>
+            <div class="timeline-title">Final Stray Allocations</div>
+            <div class="timeline-desc">Conducted online or offline to fill remaining vacancy slots. Strict parameters are applied. No fresh registrations are typically allowed.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Required Documents checklist -->
+      <div class="card">
+        <h3 class="card-title">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+          Verification Checklist
+        </h3>
+        <p style="font-size: 0.85rem; color: hsl(var(--text-secondary)); margin-bottom: 20px;">Keep your document checklist state updated. Checked items are cached in your local browser storage:</p>
+        
+        <div class="checklist-container">
+          <label class="checklist-item">
+            <input type="checkbox">
+            <span>NEET UG Admit Card</span>
+          </label>
+          <label class="checklist-item">
+            <input type="checkbox">
+            <span>NEET UG Result Card/Scorecard</span>
+          </label>
+          <label class="checklist-item">
+            <input type="checkbox">
+            <span>Class 10 Certificate & Marks Sheet</span>
+          </label>
+          <label class="checklist-item">
+            <input type="checkbox">
+            <span>Class 12 Certificate & Marks Sheet</span>
+          </label>
+          <label class="checklist-item">
+            <input type="checkbox">
+            <span>Government-issued ID Proof (Aadhaar/PAN/etc.)</span>
+          </label>
+          <label class="checklist-item">
+            <input type="checkbox">
+            <span>Domicile / State Residence Certificate</span>
+          </label>
+          <label class="checklist-item">
+            <input type="checkbox">
+            <span>Category Certificate (OBC/SC/ST/EWS) if applicable</span>
+          </label>
+          <label class="checklist-item">
+            <input type="checkbox">
+            <span>8 Passport-sized Photographs (same as NEET form)</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Central Quota Reservations Info -->
+    <div class="card" style="margin-top: 32px;">
+      <h3 class="card-title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        Central Quota Reservations (AIQ)
+      </h3>
+      <div class="reservation-grid">
+        <div class="res-card">
+          <div class="res-pct">27%</div>
+          <div class="res-name">OBC-NCL</div>
+          <div class="res-desc">Non-Creamy Layer</div>
+        </div>
+        <div class="res-card">
+          <div class="res-pct">15%</div>
+          <div class="res-name">SC</div>
+          <div class="res-desc">Scheduled Caste</div>
+        </div>
+        <div class="res-card">
+          <div class="res-pct">7.5%</div>
+          <div class="res-name">ST</div>
+          <div class="res-desc">Scheduled Tribe</div>
+        </div>
+        <div class="res-card">
+          <div class="res-pct">10%</div>
+          <div class="res-name">EWS</div>
+          <div class="res-desc">Economically Weaker Section</div>
+        </div>
+        <div class="res-card">
+          <div class="res-pct">5%</div>
+          <div class="res-name">PwD</div>
+          <div class="res-desc">Horizontal (all groups)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQs Accordions -->
+    <div class="card" style="margin-top: 32px;">
+      <h3 class="card-title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        Counselling FAQs
+      </h3>
+      
+      <div class="faq-accordion">
+        <div class="faq-header">
+          <span class="faq-title">What is the difference between AIQ and State Quota counselling?</span>
+          <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+        <div class="faq-body">
+          All India Quota (AIQ) covers 15% of MBBS/BDS seats in all state-run government medical colleges across India and is open to all candidates. Respective State Counselling bodies manage 85% of government seats and 100% of private college seats inside their boundaries, reserved for candidates holding the state's domicile certificate.
+        </div>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-header">
+          <span class="faq-title">What does "Free Exit" mean in NEET Counselling?</span>
+          <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+        <div class="faq-body">
+          Free Exit is a provision available only in Round 1 of counselling. If you are allotted a seat in Round 1 and choose not to report or join the college, you do not face any penalties, and your registration security deposit is not forfeited. This exit becomes restricted in subsequent rounds.
+        </div>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-header">
+          <span class="faq-title">How does the upgrade system work?</span>
+          <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+        <div class="faq-body">
+          If you get a college allotted in Round 1, you can report to the college and express choice willingness to "Upgrade" in Round 2. When choices are locked for Round 2, the counselling engine will attempt to allocate a higher-priority college from your list. If upgraded, your Round 1 seat is automatically assigned to someone else.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="https://mcc.nic.in" target="_blank" rel="noopener">MCC Official Portal</a>
+        <a href="https://www.nmc.org.in" target="_blank" rel="noopener">NMC official Portal</a>
+        <a href="https://neet.nta.nic.in" target="_blank" rel="noopener">NTA NEET website</a>
+      </div>
+      <p>&copy; 2026 NEET Rank Master. All predictions are estimations based on historical statistical results. Official counselling registers are issued solely by NTA & MCC.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
