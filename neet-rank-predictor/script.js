@@ -80,63 +80,76 @@ const rankData2023 = {
   100: 950001
 };
 
-// 2. State-Wise Seat Matrix Database (Approximate NMC/DCI/AYUSH aggregates)
-const stateSeatMatrix = [
-  { state: "Maharashtra", mbbsGovtCols: 30, mbbsGovtSeats: 4900, mbbsPrivCols: 35, mbbsPrivSeats: 5300, bdsGovtCols: 4, bdsGovtSeats: 350, bdsPrivCols: 25, bdsPrivSeats: 2600, ayushGovtSeats: 1250, ayushPrivSeats: 4500 },
-  { state: "Karnataka", mbbsGovtCols: 22, mbbsGovtSeats: 3150, mbbsPrivCols: 45, mbbsPrivSeats: 7950, bdsGovtCols: 3, bdsGovtSeats: 200, bdsPrivCols: 38, bdsPrivSeats: 3200, ayushGovtSeats: 850, ayushPrivSeats: 3800 },
-  { state: "Tamil Nadu", mbbsGovtCols: 38, mbbsGovtSeats: 5250, mbbsPrivCols: 34, mbbsPrivSeats: 6000, bdsGovtCols: 2, bdsGovtSeats: 200, bdsPrivCols: 20, bdsPrivSeats: 2000, ayushGovtSeats: 650, ayushPrivSeats: 2500 },
-  { state: "Uttar Pradesh", mbbsGovtCols: 35, mbbsGovtSeats: 4300, mbbsPrivCols: 32, mbbsPrivSeats: 5450, bdsGovtCols: 1, bdsGovtSeats: 100, bdsPrivCols: 22, bdsPrivSeats: 2200, ayushGovtSeats: 900, ayushPrivSeats: 5500 },
-  { state: "West Bengal", mbbsGovtCols: 26, mbbsGovtSeats: 3825, mbbsPrivCols: 9, mbbsPrivSeats: 1400, bdsGovtCols: 3, bdsGovtSeats: 200, bdsPrivCols: 8, bdsPrivSeats: 800, ayushGovtSeats: 450, ayushPrivSeats: 1100 },
-  { state: "Gujarat", mbbsGovtCols: 23, mbbsGovtSeats: 4250, mbbsPrivCols: 17, mbbsPrivSeats: 2500, bdsGovtCols: 2, bdsGovtSeats: 200, bdsPrivCols: 11, bdsPrivSeats: 1100, ayushGovtSeats: 350, ayushPrivSeats: 1800 },
-  { state: "Rajasthan", mbbsGovtCols: 26, mbbsGovtSeats: 3850, mbbsPrivCols: 9, mbbsPrivSeats: 1500, bdsGovtCols: 1, bdsGovtSeats: 50, bdsPrivCols: 14, bdsPrivSeats: 1300, ayushGovtSeats: 400, ayushPrivSeats: 1600 },
-  { state: "Delhi", mbbsGovtCols: 8, mbbsGovtSeats: 1222, mbbsPrivCols: 2, mbbsPrivSeats: 250, bdsGovtCols: 2, bdsGovtSeats: 140, bdsPrivCols: 2, bdsPrivSeats: 200, ayushGovtSeats: 250, ayushPrivSeats: 150 },
-  { state: "Andhra Pradesh", mbbsGovtCols: 18, mbbsGovtSeats: 3235, mbbsPrivCols: 19, mbbsPrivSeats: 3000, bdsGovtCols: 2, bdsGovtSeats: 200, bdsPrivCols: 14, bdsPrivSeats: 1400, ayushGovtSeats: 300, ayushPrivSeats: 800 },
-  { state: "Telangana", mbbsGovtCols: 28, mbbsGovtSeats: 3800, mbbsPrivCols: 28, mbbsPrivSeats: 4700, bdsGovtCols: 1, bdsGovtSeats: 100, bdsPrivCols: 11, bdsPrivSeats: 1100, ayushGovtSeats: 250, ayushPrivSeats: 900 },
-  { state: "Kerala", mbbsGovtCols: 12, mbbsGovtSeats: 1755, mbbsPrivCols: 21, mbbsPrivSeats: 2900, bdsGovtCols: 4, bdsGovtSeats: 240, bdsPrivCols: 20, bdsPrivSeats: 1800, ayushGovtSeats: 380, ayushPrivSeats: 1400 },
-  { state: "Bihar", mbbsGovtCols: 12, mbbsGovtSeats: 1540, mbbsPrivCols: 8, mbbsPrivSeats: 1050, bdsGovtCols: 1, bdsGovtSeats: 40, bdsPrivCols: 6, bdsPrivSeats: 550, ayushGovtSeats: 150, ayushPrivSeats: 700 },
-  { state: "Madhya Pradesh", mbbsGovtCols: 14, mbbsGovtSeats: 2250, mbbsPrivCols: 11, mbbsPrivSeats: 1900, bdsGovtCols: 1, bdsGovtSeats: 63, bdsPrivCols: 14, bdsPrivSeats: 1320, ayushGovtSeats: 320, ayushPrivSeats: 1500 },
-  { state: "Punjab", mbbsGovtCols: 4, mbbsGovtSeats: 800, mbbsPrivCols: 8, mbbsPrivSeats: 950, bdsGovtCols: 2, bdsGovtSeats: 140, bdsPrivCols: 12, bdsPrivSeats: 1100, ayushGovtSeats: 180, ayushPrivSeats: 850 },
-  { state: "Haryana", mbbsGovtCols: 6, mbbsGovtSeats: 850, mbbsPrivCols: 7, mbbsPrivSeats: 950, bdsGovtCols: 1, bdsGovtSeats: 100, bdsPrivCols: 10, bdsPrivSeats: 900, ayushGovtSeats: 120, ayushPrivSeats: 750 },
-  { state: "Odisha", mbbsGovtCols: 12, mbbsGovtSeats: 1750, mbbsPrivCols: 4, mbbsPrivSeats: 650, bdsGovtCols: 2, bdsGovtSeats: 150, bdsPrivCols: 2, bdsPrivSeats: 200, ayushGovtSeats: 200, ayushPrivSeats: 450 },
-  { state: "Assam", mbbsGovtCols: 13, mbbsGovtSeats: 1550, mbbsPrivCols: 0, mbbsPrivSeats: 0, bdsGovtCols: 3, bdsGovtSeats: 150, bdsPrivCols: 0, bdsPrivSeats: 0, ayushGovtSeats: 150, ayushPrivSeats: 50 },
-  { state: "Chhattisgarh", mbbsGovtCols: 10, mbbsGovtSeats: 1120, mbbsPrivCols: 4, mbbsPrivSeats: 600, bdsGovtCols: 1, bdsGovtSeats: 100, bdsPrivCols: 5, bdsPrivSeats: 500, ayushGovtSeats: 110, ayushPrivSeats: 500 },
-  { state: "Jharkhand", mbbsGovtCols: 7, mbbsGovtSeats: 780, mbbsPrivCols: 2, mbbsPrivSeats: 250, bdsGovtCols: 1, bdsGovtSeats: 50, bdsPrivCols: 3, bdsPrivSeats: 300, ayushGovtSeats: 100, ayushPrivSeats: 200 },
-  { state: "Jammu & Kashmir", mbbsGovtCols: 10, mbbsGovtSeats: 1147, mbbsPrivCols: 1, mbbsPrivSeats: 100, bdsGovtCols: 2, bdsGovtSeats: 125, bdsPrivCols: 1, bdsPrivSeats: 100, ayushGovtSeats: 150, ayushPrivSeats: 100 },
-  { state: "Uttarakhand", mbbsGovtCols: 4, mbbsGovtSeats: 525, mbbsPrivCols: 3, mbbsPrivSeats: 450, bdsGovtCols: 1, bdsGovtSeats: 100, bdsPrivCols: 2, bdsPrivSeats: 200, ayushGovtSeats: 120, ayushPrivSeats: 350 },
-  { state: "Himachal Pradesh", mbbsGovtCols: 7, mbbsGovtSeats: 770, mbbsPrivCols: 1, mbbsPrivSeats: 150, bdsGovtCols: 1, bdsGovtSeats: 60, bdsPrivCols: 4, bdsPrivSeats: 320, ayushGovtSeats: 100, ayushPrivSeats: 250 }
-];
+// 2. State-Wise Seat Matrix & College Databases (initialized as empty, loaded dynamically)
+let stateSeatMatrix = [];
+let collegesDb = [];
 
-// 3. College Database for predictable lists (Closing ranks are estimated based on General AIQ MCC)
-const collegesDb = [
-  { name: "All India Institute of Medical Sciences (AIIMS)", city: "New Delhi", state: "Delhi", type: "Government", course: "MBBS", closingGeneralRank: 50 },
-  { name: "Maulana Azad Medical College (MAMC)", city: "New Delhi", state: "Delhi", type: "Government", course: "MBBS", closingGeneralRank: 100 },
-  { name: "Vardhman Mahavir Medical College (VMMC)", city: "New Delhi", state: "Delhi", type: "Government", course: "MBBS", closingGeneralRank: 160 },
-  { name: "JIPMER", city: "Puducherry", state: "Puducherry", type: "Government", course: "MBBS", closingGeneralRank: 280 },
-  { name: "AIIMS Bhubaneswar", city: "Bhubaneswar", state: "Odisha", type: "Government", course: "MBBS", closingGeneralRank: 500 },
-  { name: "AIIMS Bhopal", city: "Bhopal", state: "Madhya Pradesh", type: "Government", course: "MBBS", closingGeneralRank: 600 },
-  { name: "Lady Hardinge Medical College (LHMC) - Females Only", city: "New Delhi", state: "Delhi", type: "Government", course: "MBBS", closingGeneralRank: 650 },
-  { name: "King George's Medical University (KGMU)", city: "Lucknow", state: "Uttar Pradesh", type: "Government", course: "MBBS", closingGeneralRank: 1100 },
-  { name: "Seth GS Medical College", city: "Mumbai", state: "Maharashtra", type: "Government", course: "MBBS", closingGeneralRank: 1050 },
-  { name: "SMS Medical College", city: "Jaipur", state: "Rajasthan", type: "Government", course: "MBBS", closingGeneralRank: 1300 },
-  { name: "Madras Medical College", city: "Chennai", state: "Tamil Nadu", type: "Government", course: "MBBS", closingGeneralRank: 1200 },
-  { name: "Bangalore Medical College (BMCRI)", city: "Bengaluru", state: "Karnataka", type: "Government", course: "MBBS", closingGeneralRank: 1600 },
-  { name: "BJ Medical College", city: "Ahmedabad", state: "Gujarat", type: "Government", course: "MBBS", closingGeneralRank: 1400 },
-  { name: "Government Medical College", city: "Kozhikode", state: "Kerala", type: "Government", course: "MBBS", closingGeneralRank: 2100 },
-  { name: "Medical College Kolkata", city: "Kolkata", state: "West Bengal", type: "Government", course: "MBBS", closingGeneralRank: 2000 },
-  { name: "Patna Medical College (PMCH)", city: "Patna", state: "Bihar", type: "Government", course: "MBBS", closingGeneralRank: 3600 },
-  { name: "Kasturba Medical College (KMC) - Deemed", city: "Manipal", state: "Karnataka", type: "Private", course: "MBBS", closingGeneralRank: 45000 },
-  { name: "Hamdard Institute of Medical Sciences (HIMSR) - Private", city: "New Delhi", state: "Delhi", type: "Private", course: "MBBS", closingGeneralRank: 55000 },
-  { name: "Maulana Azad Institute of Dental Sciences (MAIDS)", city: "New Delhi", state: "Delhi", type: "Government", course: "BDS", closingGeneralRank: 9500 },
-  { name: "Government Dental College & Hospital", city: "Mumbai", state: "Maharashtra", type: "Government", course: "BDS", closingGeneralRank: 24000 },
-  { name: "Government Dental College", city: "Bengaluru", state: "Karnataka", type: "Government", course: "BDS", closingGeneralRank: 27000 },
-  { name: "IMS BHU Dental", city: "Varanasi", state: "Uttar Pradesh", type: "Government", course: "BDS", closingGeneralRank: 22000 },
-  { name: "King George's Dental College", city: "Lucknow", state: "Uttar Pradesh", type: "Government", course: "BDS", closingGeneralRank: 18000 },
-  { name: "Dr. R. Ahmed Dental College", city: "Kolkata", state: "West Bengal", type: "Government", course: "BDS", closingGeneralRank: 29000 },
-  { name: "Christian Medical College (CMC) - Private", city: "Vellore", state: "Tamil Nadu", type: "Private", course: "MBBS", closingGeneralRank: 25000 },
-  { name: "St. John's Medical College - Private", city: "Bengaluru", state: "Karnataka", type: "Private", course: "MBBS", closingGeneralRank: 15000 },
-  { name: "M.S. Ramaiah Medical College - Private", city: "Bengaluru", state: "Karnataka", type: "Private", course: "MBBS", closingGeneralRank: 40000 },
-  { name: "K.P.S. Salve Institute of Medical Sciences - Private", city: "Nagpur", state: "Maharashtra", type: "Private", course: "MBBS", closingGeneralRank: 60000 }
-];
+// 3. Async Database Loader
+async function loadDatabase() {
+  try {
+    const response = await fetch("neet_data.json");
+    if (!response.ok) throw new Error("JSON load failed");
+    const data = await response.json();
+    stateSeatMatrix = data.stateSeatMatrix || [];
+    collegesDb = data.collegesDb || [];
+    console.log("NEET College Database loaded successfully! Records:", collegesDb.length);
+    return true;
+  } catch (e) {
+    console.warn("Failed to load NEET JSON Database, using hardcoded fallback:", e);
+    // Hardcoded fallback for local file:// mode to prevent any failures
+    stateSeatMatrix = [
+      { "state": "Delhi", "mbbsGovtCols": 8, "mbbsGovtSeats": 1222, "mbbsPrivCols": 2, "mbbsPrivSeats": 250, "bdsGovtCols": 2, "bdsGovtSeats": 140, "bdsPrivCols": 2, "bdsPrivSeats": 200, "ayushGovtSeats": 250, "ayushPrivSeats": 150 },
+      { "state": "Maharashtra", "mbbsGovtCols": 30, "mbbsGovtSeats": 4900, "mbbsPrivCols": 35, "mbbsPrivSeats": 5300, "bdsGovtCols": 4, "bdsGovtSeats": 350, "bdsPrivCols": 25, "bdsPrivSeats": 2600, "ayushGovtSeats": 1250, "ayushPrivSeats": 4500 },
+      { "state": "Karnataka", "mbbsGovtCols": 22, "mbbsGovtSeats": 3150, "mbbsPrivCols": 45, "mbbsPrivSeats": 7950, "bdsGovtCols": 3, "bdsGovtSeats": 200, "bdsPrivCols": 38, "bdsPrivSeats": 3200, "ayushGovtSeats": 850, "ayushPrivSeats": 3800 }
+    ];
+    collegesDb = [
+      { "name": "Maulana Azad Medical College (MAMC)", "city": "New Delhi", "state": "Delhi", "course": "MBBS", "type": "Government", "closingGeneralRank": 100, "fee": "12,000/yr" },
+      { "name": "Seth GS Medical College (KEM)", "city": "Mumbai", "state": "Maharashtra", "course": "MBBS", "type": "Government", "closingGeneralRank": 450, "fee": "120,000/yr" },
+      { "name": "Bangalore Medical College & Research Institute (BMCRI)", "city": "Bengaluru", "state": "Karnataka", "course": "MBBS", "type": "Government", "closingGeneralRank": 1200, "fee": "70,000/yr" }
+    ];
+    return false;
+  }
+}
+
+// 3b. Dropdown State Populator
+function populateStateDropdowns() {
+  const stateSelect = document.getElementById("state-select");
+  const selectStateSeat = document.getElementById("select-state-seat");
+  const predSelectState = document.getElementById("pred-select-state");
+
+  const states = stateSeatMatrix.map(row => row.state).sort();
+
+  if (stateSelect) {
+    stateSelect.innerHTML = "";
+    states.forEach(s => {
+      const opt = document.createElement("option");
+      opt.value = s;
+      opt.textContent = s;
+      if (s === "Maharashtra") opt.selected = true;
+      stateSelect.appendChild(opt);
+    });
+  }
+
+  if (selectStateSeat) {
+    selectStateSeat.innerHTML = `<option value="All">All States</option>`;
+    states.forEach(s => {
+      const opt = document.createElement("option");
+      opt.value = s;
+      opt.textContent = s;
+      selectStateSeat.appendChild(opt);
+    });
+  }
+
+  if (predSelectState) {
+    predSelectState.innerHTML = `<option value="All">All States</option>`;
+    states.forEach(s => {
+      const opt = document.createElement("option");
+      opt.value = s;
+      opt.textContent = s;
+      predSelectState.appendChild(opt);
+    });
+  }
+}
 
 // 4. Rank Interpolation Logic
 function getInterpolatedRank(score, yearData) {
@@ -774,15 +787,7 @@ function initApp() {
     seatSearch.addEventListener("input", renderSeatMatrix);
   }
 
-  // Pre-fill state matrix dropdowns
-  if (selectStateSeat) {
-    stateSeatMatrix.forEach(row => {
-      const opt = document.createElement("option");
-      opt.value = row.state;
-      opt.textContent = row.state;
-      selectStateSeat.appendChild(opt);
-    });
-  }
+  // State matrix dropdowns will be populated dynamically from neet_data.json
 
   // --- COLLEGE PREDICTOR FILTERING ---
   function renderColleges() {
@@ -1187,8 +1192,11 @@ function initApp() {
   }
 
   // --- INITIAL RENDERS ---
-  renderSeatMatrix();
-  renderColleges();
+  loadDatabase().then(() => {
+    populateStateDropdowns();
+    renderSeatMatrix();
+    renderColleges();
+  });
 }
 
 // Global script load orchestrator
