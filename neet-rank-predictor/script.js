@@ -1118,37 +1118,60 @@ function initApp() {
 
     const fullPrompt = `${systemInstruction}\n\nUser Question: ${query}`;
 
-    try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                { text: fullPrompt }
-              ]
-            }
-          ]
-        })
-      });
+    const modelsToTry = [
+      "gemini-1.5-flash",
+      "gemini-1.5-pro",
+      "gemini-pro"
+    ];
 
-      const data = await response.json();
-      removeLoading();
+    let success = false;
+    let aiResponseText = "";
+    let apiErrorDetail = "";
 
-      if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
-        const aiResponse = data.candidates[0].content.parts[0].text;
-        appendMessage("AI Counsellor", aiResponse, "ai");
-      } else {
-        console.error("API response structure error:", data);
-        let errMsg = "Received an empty or invalid response from the API. Please double-check your API key and network connection.";
-        if (data.error && data.error.message) {
-          errMsg = `API Error: ${data.error.message}`;
+    for (const modelName of modelsToTry) {
+      try {
+        console.log(`Attempting connection with model: ${modelName}`);
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${geminiApiKey}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  { text: fullPrompt }
+                ]
+              }
+            ]
+          })
+        });
+
+        const data = await response.json();
+        
+        if (response.ok && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
+          aiResponseText = data.candidates[0].content.parts[0].text;
+          success = true;
+          break; // Exit loop on success
+        } else {
+          const errMsg = data.error && data.error.message ? data.error.message : "Invalid response payload";
+          console.warn(`Model ${modelName} call failed: ${errMsg}`);
+          apiErrorDetail = errMsg;
         }
-        appendMessage("AI Counsellor", errMsg, "ai");
+      } catch (err) {
+        console.warn(`Fetch error for ${modelName}:`, err);
+        apiErrorDetail = err.message || "Network request failed";
       }
+    }
+
+    removeLoading();
+
+    if (success) {
+      appendMessage("AI Counsellor", aiResponseText, "ai");
+    } else {
+      let finalErrMsg = `API Error: The models (gemini-1.5-flash, gemini-1.5-pro, gemini-pro) are not supported by your API key. Details: ${apiErrorDetail}`;
+      appendMessage("AI Counsellor", finalErrMsg, "ai");
+    }
     } catch (err) {
       removeLoading();
       console.error("Gemini API connection error:", err);
