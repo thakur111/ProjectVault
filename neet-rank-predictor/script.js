@@ -454,6 +454,10 @@ function initApp() {
 
     // If switching to College Predictor, auto-trigger render
     if (targetTabId === "tab-colleges") {
+      const model = predSelectModel ? predSelectModel.value : "2026";
+      if (lastPredictedRanks && lastPredictedRanks[model]) {
+        predRankInput.value = lastPredictedRanks[model];
+      }
       renderColleges();
     }
 
