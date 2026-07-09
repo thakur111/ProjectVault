@@ -780,6 +780,44 @@ function initApp() {
       <td class="text-right font-mono" style="color: hsl(var(--primary));">${(totalGovtSeats + totalPrivSeats).toLocaleString("en-IN")}</td>
     `;
     seatTableBody.appendChild(totalRow);
+
+    // Update dashboard widgets dynamically!
+    const seatDashColleges = document.getElementById("seat-dash-colleges");
+    const seatDashSeats = document.getElementById("seat-dash-seats");
+    const seatDashRatio = document.getElementById("seat-dash-ratio");
+    const seatDashRatioBar = document.getElementById("seat-dash-ratio-bar");
+    const seatDashTopState = document.getElementById("seat-dash-topstate");
+    const seatDashTopStateVal = document.getElementById("seat-dash-topstate-val");
+
+    if (seatDashColleges) seatDashColleges.textContent = totalColleges.toLocaleString("en-IN");
+    if (seatDashSeats) seatDashSeats.textContent = (totalGovtSeats + totalPrivSeats).toLocaleString("en-IN");
+    
+    if (seatDashRatio && seatDashRatioBar) {
+      const totalCombined = totalGovtSeats + totalPrivSeats;
+      if (totalCombined > 0) {
+        const govtShare = Math.round((totalGovtSeats / totalCombined) * 100);
+        seatDashRatio.textContent = `${govtShare}% Govt / ${100 - govtShare}% Pvt`;
+        seatDashRatioBar.style.width = `${govtShare}%`;
+      } else {
+        seatDashRatio.textContent = "0% Govt / 0% Pvt";
+        seatDashRatioBar.style.width = "0%";
+      }
+    }
+
+    if (seatDashTopState && seatDashTopStateVal) {
+      let topState = "N/A";
+      let topVal = 0;
+      filteredStates.forEach(row => {
+        const stats = getCourseSeats(row, course);
+        const total = stats.govtSeats + stats.privSeats;
+        if (total > topVal) {
+          topVal = total;
+          topState = row.state;
+        }
+      });
+      seatDashTopState.textContent = topState;
+      seatDashTopStateVal.textContent = topVal > 0 ? `${topVal.toLocaleString("en-IN")} seats` : "-- seats";
+    }
   }
 
   // Bind Seat matrix event triggers

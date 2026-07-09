@@ -332,7 +332,31 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
         State-Wise Seat Matrix Explorer
       </h3>
-      
+
+      <!-- Seat Matrix Dashboard Metrics -->
+      <div class="metrics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+        <div class="metric-card" style="background: hsl(var(--bg-main) / 0.4); border: 1px solid hsl(var(--border-glass)); padding: 16px; border-radius: var(--radius-md); text-align: left; position: relative; overflow: hidden; transition: transform var(--transition-fast);">
+          <div style="font-size: 0.8rem; font-weight: 700; color: hsl(var(--text-muted)); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Total Active Colleges</div>
+          <div id="seat-dash-colleges" style="font-size: 1.8rem; font-weight: 800; font-family: var(--font-mono); color: hsl(var(--primary));">--</div>
+          <div style="font-size: 0.75rem; color: hsl(var(--text-muted)); margin-top: 4px;">Sum of matching institutions</div>
+        </div>
+        <div class="metric-card" style="background: hsl(var(--bg-main) / 0.4); border: 1px solid hsl(var(--border-glass)); padding: 16px; border-radius: var(--radius-md); text-align: left; position: relative; overflow: hidden; transition: transform var(--transition-fast);">
+          <div style="font-size: 0.8rem; font-weight: 700; color: hsl(var(--text-muted)); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Total Course Seats</div>
+          <div id="seat-dash-seats" style="font-size: 1.8rem; font-weight: 800; font-family: var(--font-mono); color: hsl(var(--secondary));">--</div>
+          <div style="font-size: 0.75rem; color: hsl(var(--text-muted)); margin-top: 4px;">Aggregated active seats</div>
+        </div>
+        <div class="metric-card" style="background: hsl(var(--bg-main) / 0.4); border: 1px solid hsl(var(--border-glass)); padding: 16px; border-radius: var(--radius-md); text-align: left; position: relative; overflow: hidden; transition: transform var(--transition-fast);">
+          <div style="font-size: 0.8rem; font-weight: 700; color: hsl(var(--text-muted)); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Govt vs Private Share</div>
+          <div id="seat-dash-ratio" style="font-size: 1.4rem; font-weight: 800; font-family: var(--font-mono); color: hsl(var(--success));">--</div>
+          <div class="cell-progress-bar" style="margin-top: 8px; height: 6px;"><div id="seat-dash-ratio-bar" class="cell-progress-fill" style="width: 50%; background: hsl(var(--success));"></div></div>
+        </div>
+        <div class="metric-card" style="background: hsl(var(--bg-main) / 0.4); border: 1px solid hsl(var(--border-glass)); padding: 16px; border-radius: var(--radius-md); text-align: left; position: relative; overflow: hidden; transition: transform var(--transition-fast);">
+          <div style="font-size: 0.8rem; font-weight: 700; color: hsl(var(--text-muted)); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Top Seat-Rich State</div>
+          <div id="seat-dash-topstate" style="font-size: 1.3rem; font-weight: 800; color: hsl(var(--accent)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 6px;">--</div>
+          <div id="seat-dash-topstate-val" style="font-size: 0.75rem; color: hsl(var(--text-muted)); margin-top: 4px;">-- seats</div>
+        </div>
+      </div>
+
       <div class="seat-controls">
         <div class="form-group" style="margin-bottom: 0;">
           <label for="select-course-seat">Course Type</label>
