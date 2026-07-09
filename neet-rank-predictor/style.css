@@ -1204,3 +1204,101 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+/* 10-Year Historical Trends Features Styles */
+@media (min-width: 992px) {
+  .ranks-comparison {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .trend-visualization-grid {
+    grid-template-columns: 3fr 2fr !important;
+  }
+}
+
+.seat-controls-predictor {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+@media (min-width: 768px) {
+  .seat-controls-predictor {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .seat-controls-predictor {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* SVG Line Chart styling */
+.chart-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.chart-axis-line {
+  stroke: hsl(var(--border-glass));
+  stroke-width: 1.5;
+}
+.chart-grid-line {
+  stroke: hsl(var(--border-glass) / 0.25);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+.chart-trend-path {
+  fill: none;
+  stroke: url(#chart-gradient);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: drawPath 1.8s ease-in-out forwards;
+}
+.chart-point {
+  fill: hsl(var(--bg-surface));
+  stroke: hsl(var(--primary));
+  stroke-width: 3;
+  cursor: pointer;
+  transition: transform var(--transition-fast), fill var(--transition-fast);
+}
+.chart-point:hover {
+  transform: scale(1.4);
+  fill: hsl(var(--primary));
+}
+.chart-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: hsl(var(--text-secondary));
+  text-anchor: middle;
+}
+.chart-y-label {
+  text-anchor: end;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: hsl(var(--text-muted));
+}
+
+@keyframes drawPath {
+  from { stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+  to { stroke-dasharray: 1000; stroke-dashoffset: 0; }
+}
+
+/* Floating Tooltip inside Chart Container */
+.chart-tooltip {
+  position: absolute;
+  background: hsl(var(--bg-surface));
+  border: 1px solid hsl(var(--primary) / 0.5);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  color: hsl(var(--text-primary));
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  z-index: 10;
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(8px);
+}

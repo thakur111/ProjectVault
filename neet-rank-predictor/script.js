@@ -1,5 +1,12 @@
 // NEET UG Rank Predictor & Counselling Dashboard Logic Engine
 
+// Global tracking for predicted ranks across different models
+let lastPredictedRanks = {
+  2023: 24000,
+  2024: 24000,
+  2026: 24000
+};
+
 // 1. Marks vs Rank Datasets for Interpolation
 const rankData2024 = {
   720: 1,
@@ -163,6 +170,138 @@ function getInterpolatedRank(score, yearData) {
   return yearData[100];
 }
 
+// 4b. 10-Year Rank Extrapolation Model
+function get10YearRanks(score) {
+  const r23 = getInterpolatedRank(score, rankData2023);
+  const r24 = getInterpolatedRank(score, rankData2024);
+
+  return [
+    { year: 2017, rank: Math.max(1, Math.round(r23 * 0.15)), factor: "0.15x" },
+    { year: 2018, rank: Math.max(1, Math.round(r23 * 0.20)), factor: "0.20x" },
+    { year: 2019, rank: Math.max(1, Math.round(r23 * 0.35)), factor: "0.35x" },
+    { year: 2020, rank: Math.max(1, Math.round(r23 * 0.48)), factor: "0.48x" },
+    { year: 2021, rank: Math.max(1, Math.round(r23 * 0.65)), factor: "0.65x" },
+    { year: 2022, rank: Math.max(1, Math.round(r23 * 0.78)), factor: "0.78x" },
+    { year: 2023, rank: r23, factor: "1.00x (Base)" },
+    { year: 2024, rank: r24, factor: "1.00x (Base)" },
+    { year: 2025, rank: Math.max(1, Math.round(r24 * 0.85)), factor: "0.85x" },
+    { year: 2026, rank: Math.max(1, Math.round(r24 * 1.08)), factor: "1.08x (Proj)" }
+  ];
+}
+
+// 4c. Dynamic SVG Line Chart Drawer
+function drawTrendChart(ranks) {
+  const container = document.getElementById("trend-chart-container");
+  if (!container) return;
+
+  const width = container.clientWidth || 500;
+  const height = 260;
+  
+  const paddingLeft = 55;
+  const paddingRight = 20;
+  const paddingTop = 25;
+  const paddingBottom = 40;
+  
+  const chartWidth = width - paddingLeft - paddingRight;
+  const chartHeight = height - paddingTop - paddingBottom;
+  
+  const minRank = Math.min(...ranks.map(r => r.rank));
+  const maxRank = Math.max(...ranks.map(r => r.rank));
+  
+  const logMin = Math.log10(Math.max(1, minRank));
+  const logMax = Math.log10(Math.max(10, maxRank));
+  const logRange = logMax - logMin || 1;
+  
+  const points = ranks.map((r, idx) => {
+    const x = paddingLeft + (idx / (ranks.length - 1)) * chartWidth;
+    const y = paddingTop + chartHeight - ((Math.log10(Math.max(1, r.rank)) - logMin) / logRange) * chartHeight;
+    return { x, y, year: r.year, rank: r.rank };
+  });
+  
+  let yGridHtml = "";
+  for (let i = 0; i <= 4; i++) {
+    const ratio = i / 4;
+    const yVal = paddingTop + ratio * chartHeight;
+    const logVal = logMax - ratio * logRange;
+    const rankVal = Math.round(Math.pow(10, logVal));
+    
+    let label = rankVal.toLocaleString("en-IN");
+    if (rankVal >= 100000) label = (rankVal / 100000).toFixed(1) + "L";
+    else if (rankVal >= 1000) label = (rankVal / 1000).toFixed(0) + "k";
+    
+    yGridHtml += `
+      <line class="chart-grid-line" x1="${paddingLeft}" y1="${yVal}" x2="${width - paddingRight}" y2="${yVal}"></line>
+      <text class="chart-y-label" x="${paddingLeft - 10}" y="${yVal + 4}">${label}</text>
+    `;
+  }
+  
+  let xGridHtml = "";
+  points.forEach(p => {
+    xGridHtml += `
+      <line class="chart-grid-line" x1="${p.x}" y1="${paddingTop}" x2="${p.x}" y2="${paddingTop + chartHeight}"></line>
+      <text class="chart-label" x="${p.x}" y="${paddingTop + chartHeight + 20}">${p.year}</text>
+    `;
+  });
+  
+  let pathD = `M ${points[0].x} ${points[0].y}`;
+  for (let i = 1; i < points.length; i++) {
+    pathD += ` L ${points[i].x} ${points[i].y}`;
+  }
+  
+  let pointsHtml = "";
+  points.forEach(p => {
+    pointsHtml += `
+      <circle class="chart-point" cx="${p.x}" cy="${p.y}" r="5" 
+        data-year="${p.year}" data-rank="${p.rank.toLocaleString("en-IN")}"></circle>
+    `;
+  });
+
+  const svgHtml = `
+    <svg class="chart-svg" width="100%" height="${height}">
+      <defs>
+        <linearGradient id="chart-gradient" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="hsl(var(--primary))"></stop>
+          <stop offset="100%" stop-color="hsl(var(--secondary))"></stop>
+        </linearGradient>
+      </defs>
+      
+      ${yGridHtml}
+      ${xGridHtml}
+      
+      <line class="chart-axis-line" x1="${paddingLeft}" y1="${paddingTop}" x2="${paddingLeft}" y2="${paddingTop + chartHeight}"></line>
+      <line class="chart-axis-line" x1="${paddingLeft}" y1="${paddingTop + chartHeight}" x2="${width - paddingRight}" y2="${paddingTop + chartHeight}"></line>
+      
+      <path class="chart-trend-path" d="${pathD}"></path>
+      
+      ${pointsHtml}
+    </svg>
+    <div class="chart-tooltip" id="chart-tooltip-el"></div>
+  `;
+  
+  container.innerHTML = svgHtml;
+  
+  const circles = container.querySelectorAll(".chart-point");
+  const tooltip = container.querySelector("#chart-tooltip-el");
+  
+  circles.forEach(c => {
+    c.addEventListener("mouseenter", (e) => {
+      const year = e.target.getAttribute("data-year");
+      const rank = e.target.getAttribute("data-rank");
+      tooltip.innerHTML = `<strong>${year}</strong>: AIR ~${rank}`;
+      tooltip.style.opacity = "1";
+      
+      const rect = e.target.getBoundingClientRect();
+      const parentRect = container.getBoundingClientRect();
+      tooltip.style.left = (rect.left - parentRect.left - 50) + "px";
+      tooltip.style.top = (rect.top - parentRect.top - 45) + "px";
+    });
+    
+    c.addEventListener("mouseleave", () => {
+      tooltip.style.opacity = "0";
+    });
+  });
+}
+
 // 5. Category Cutoff Multiplier Scale
 function getCategoryClosingRank(baseRank, category) {
   switch (category) {
@@ -254,6 +393,7 @@ function initApp() {
   const predSelectState = document.getElementById("pred-select-state");
   const predSelectType = document.getElementById("pred-select-type");
   const predRankInput = document.getElementById("pred-rank-input");
+  const predSelectModel = document.getElementById("pred-select-model");
   const btnFilterColleges = document.getElementById("btn-filter-colleges");
 
   // Checklist elements
@@ -382,17 +522,49 @@ function initApp() {
         offset = simulateTieBreaker(score, category, bio, chem, phy);
       }
 
-      // 1. Get raw interpolated ranks
+      // 1. Get raw interpolated ranks and 10-year array
       let rank2024 = getInterpolatedRank(score, rankData2024) + offset;
       let rank2023 = getInterpolatedRank(score, rankData2023) + offset;
-
+      
       // Ensure ranks do not fall below 1
       if (rank2024 < 1) rank2024 = 1;
       if (rank2023 < 1) rank2023 = 1;
 
-      // 2. Format numbers
-      rank2024Val.textContent = rank2024.toLocaleString("en-IN");
-      rank2023Val.textContent = rank2023.toLocaleString("en-IN");
+      const ranks10Year = get10YearRanks(score);
+      const rank2026 = ranks10Year.find(r => r.year === 2026).rank;
+
+      // Store ranks globally for synchronization
+      lastPredictedRanks[2023] = rank2023;
+      lastPredictedRanks[2024] = rank2024;
+      lastPredictedRanks[2026] = rank2026;
+
+      // 2. Format and render numbers
+      if (rank2024Val) rank2024Val.textContent = rank2024.toLocaleString("en-IN");
+      if (rank2023Val) rank2023Val.textContent = rank2023.toLocaleString("en-IN");
+      const rank2026Val = document.getElementById("rank-2026-val");
+      if (rank2026Val) rank2026Val.textContent = rank2026.toLocaleString("en-IN");
+
+      // Draw SVG chart and fill 10-year history table
+      drawTrendChart(ranks10Year);
+      const trendTableBody = document.getElementById("trend-table-body");
+      if (trendTableBody) {
+        trendTableBody.innerHTML = "";
+        ranks10Year.forEach(row => {
+          const tr = document.createElement("tr");
+          let statusColor = "color: hsl(var(--warning));";
+          if (row.year === 2024 || row.year === 2026) {
+            statusColor = "color: hsl(var(--error));";
+          } else if (row.year <= 2020) {
+            statusColor = "color: hsl(var(--success));";
+          }
+          tr.innerHTML = `
+            <td style="font-weight: 700;">${row.year}</td>
+            <td class="text-right font-mono">${row.rank.toLocaleString("en-IN")}</td>
+            <td class="text-right" style="font-weight: 600; ${statusColor}">${row.factor}</td>
+          `;
+          trendTableBody.appendChild(tr);
+        });
+      }
 
       // 3. Calculate Govt Seat Admission Chance Percentage (based on 2024 rank and category)
       // Standard cutoff ranks for government seats in AIQ:
@@ -468,13 +640,16 @@ function initApp() {
 
       // Prefill College Predictor rank input
       if (predRankInput) {
-        predRankInput.value = rank2024;
+        predRankInput.value = rank2026; // default to 2026 forecast rank
       }
       if (predSelectCategory) {
         predSelectCategory.value = category;
       }
       if (predSelectState) {
         predSelectState.value = state;
+      }
+      if (predSelectModel) {
+        predSelectModel.value = "2026"; // reset model selection to 2026 Forecast
       }
 
       // Auto-run college predictor list update
@@ -611,7 +786,14 @@ function initApp() {
 
   // --- COLLEGE PREDICTOR FILTERING ---
   function renderColleges() {
-    if (!collegeListContainer) return;
+    if (!collegeListContainer || !predRankInput || !predSelectCategory || !predSelectState || !predSelectType) return;
+
+    const modelFilter = predSelectModel ? predSelectModel.value : "2026";
+    
+    // Auto-update rankVal display if we have a saved rank for the selected model
+    if (lastPredictedRanks && lastPredictedRanks[modelFilter]) {
+      predRankInput.value = lastPredictedRanks[modelFilter];
+    }
 
     const rankVal = parseInt(predRankInput.value);
     const category = predSelectCategory.value;
@@ -756,6 +938,11 @@ function initApp() {
       }
     });
   });
+
+  // Bind model change listener in college predictor
+  if (predSelectModel) {
+    predSelectModel.addEventListener("change", renderColleges);
+  }
 
   // --- INITIAL RENDERS ---
   renderSeatMatrix();

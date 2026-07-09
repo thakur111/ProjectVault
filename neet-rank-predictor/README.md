@@ -5,8 +5,9 @@ A premium, interactive web application dashboard designed for NEET-UG aspirants 
 ## Features
 
 1. **Vibrant & Modern UI (Glassmorphic Dark Mode)**: Built with HSL custom properties, featuring glowing cards, backdrop blurs (`backdrop-filter`), smooth fade-in animations, responsive hamburger drawers, and custom SVG gauges.
-2. **Double-Trend Rank Prediction**: 
-   - Compares the **2024 hyper-inflation trend** (high competitive benchmark) against the **2023 moderate trend** (conservative benchmark) using smooth linear interpolation.
+2. **10-Year Historical Trends & 2026 Forecast**: 
+   - Compares the **2024 hyper-inflation trend** (high competitive benchmark), **2023 moderate trend** (best case), and a weighted **2026 forecast model** using 10 years of historical data (2017-2026).
+   - Generates a dynamic, interactive **SVG line chart** plotting estimated ranks over the decade for the entered score.
    - Provides optional **Tie-Breaker inputs** (Biology, Chemistry, Physics scores) to resolve equal marks according to NTA guidelines.
 3. **Interactive Seat Matrix Explorer**: 
    - Filters state-wise seats of Government vs. Private medical colleges across India.
@@ -14,6 +15,7 @@ A premium, interactive web application dashboard designed for NEET-UG aspirants 
    - Provides live aggregation stats totals.
 4. **Target College Predictor**:
    - Compares candidate ranks against closing statistics of top government and private medical institutions.
+   - Supports selecting different simulation models (**2026 Forecast**, **2024 Hyper-Inflation**, or **2023 Moderate**) which automatically updates student ranks and eligibility.
    - Evaluates admission probability status: **Safe (Green)**, **Borderline (Amber)**, or **Risky (Red)**, scaling cutoff ranks based on the selected category (General, OBC, SC, ST, EWS).
 5. **Counselling Guide & Local Verification Checklist**:
    - Guides students through round timelines (Round 1, Round 2, Mop-Up, Stray Vacancy).
