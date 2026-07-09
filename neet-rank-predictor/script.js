@@ -1172,11 +1172,6 @@ function initApp() {
       let finalErrMsg = `API Error: The models (gemini-1.5-flash, gemini-1.5-pro, gemini-pro) are not supported by your API key. Details: ${apiErrorDetail}`;
       appendMessage("AI Counsellor", finalErrMsg, "ai");
     }
-    } catch (err) {
-      removeLoading();
-      console.error("Gemini API connection error:", err);
-      appendMessage("AI Counsellor", "Network Connection Error: Failed to contact the Gemini API. Please check your internet connectivity.", "ai");
-    }
   }
 
   if (btnSendChat) {
