@@ -504,6 +504,33 @@ function initApp() {
     });
   }
 
+  // --- STATE & CATEGORY SYNCHRONIZATION BETWEEN TABS ---
+  if (categorySelect && predSelectCategory) {
+    categorySelect.addEventListener("change", (e) => {
+      predSelectCategory.value = e.target.value;
+      renderColleges();
+    });
+    predSelectCategory.addEventListener("change", (e) => {
+      categorySelect.value = e.target.value;
+      if (btnPredict) btnPredict.click();
+    });
+  }
+
+  if (stateSelect && predSelectState) {
+    stateSelect.addEventListener("change", (e) => {
+      predSelectState.value = e.target.value;
+      renderColleges();
+    });
+    predSelectState.addEventListener("change", (e) => {
+      if (e.target.value !== "All") {
+        stateSelect.value = e.target.value;
+        if (btnPredict) btnPredict.click();
+      } else {
+        renderColleges();
+      }
+    });
+  }
+
   // --- TIE BREAKER ACCORDION ---
   if (tieBreakerToggle) {
     tieBreakerToggle.addEventListener("change", (e) => {
@@ -1160,10 +1187,12 @@ function initApp() {
     // Show loader
     showLoading();
 
-    // Retrieve state settings for prompt injection
+    // Retrieve state settings for prompt injection (preferring custom entries in predictor if available)
     const score = scoreInput ? scoreInput.value : "Not specified";
-    const category = categorySelect ? categorySelect.value : "GEN";
-    const state = stateSelect ? stateSelect.value : "Not specified";
+    const category = predSelectCategory ? predSelectCategory.value : (categorySelect ? categorySelect.value : "GEN");
+    const state = predSelectState ? predSelectState.value : (stateSelect ? stateSelect.value : "Not specified");
+    const currentPredictorRank = predRankInput ? parseInt(predRankInput.value) : NaN;
+    const activeModel = predSelectModel ? predSelectModel.value : "2026";
     
     const rank23 = lastPredictedRanks[2023] ? lastPredictedRanks[2023].toLocaleString("en-IN") : "Not calculated";
     const rank24 = lastPredictedRanks[2024] ? lastPredictedRanks[2024].toLocaleString("en-IN") : "Not calculated";
@@ -1172,11 +1201,13 @@ function initApp() {
     const systemInstruction = `You are a knowledgeable and empathetic AI NEET UG Admission Counsellor. Your goal is to guide students on cutoffs, reservations, choice filling, college selection, and counseling procedures for MBBS, BDS, and AYUSH courses in India.
     The student currently has these metrics:
     - NEET Score: ${score}
-    - Predicted 2024 Rank: ${rank24}
-    - Predicted 2023 Rank: ${rank23}
-    - Projected 2026 Rank: ${rank26}
-    - Category: ${category}
     - Domicile State: ${state}
+    - Category: ${category}
+    - Currently viewed target All India Rank (AIR) in Predictor: ${isNaN(currentPredictorRank) ? "Not entered" : currentPredictorRank} (Model: ${activeModel} Forecast)
+    - Calculated forecast ranks:
+      * 2026 Forecast AIR: ${rank26}
+      * 2024 Actual AIR: ${rank24}
+      * 2023 Actual AIR: ${rank23}
     
     Be extremely clear, precise, and supportive. Use markdown formatting (bullet points, bold text) when listing recommendations or cutoffs. Provide realistic, conservative assessments based on these ranks. If you suggest a college, mention if it fits their quota (AIQ 15% or State Quota 85%).`;
 
