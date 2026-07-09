@@ -461,6 +461,9 @@ function initApp() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  // Expose switchTab globally for inline HTML click events
+  window.switchTab = switchTab;
+
   tabButtons.forEach(button => {
     button.addEventListener("click", () => {
       const tabId = button.getAttribute("data-tab");

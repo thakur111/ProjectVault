@@ -1262,10 +1262,11 @@ footer {
   stroke: hsl(var(--primary));
   stroke-width: 3;
   cursor: pointer;
-  transition: transform var(--transition-fast), fill var(--transition-fast);
+  r: 5px;
+  transition: r var(--transition-fast), fill var(--transition-fast);
 }
 .chart-point:hover {
-  transform: scale(1.4);
+  r: 8px;
   fill: hsl(var(--primary));
 }
 .chart-label {
