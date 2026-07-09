@@ -944,6 +944,232 @@ function initApp() {
     predSelectModel.addEventListener("change", renderColleges);
   }
 
+  // --- AI ASSISTANT CHAT ENGINE ---
+  const chatLog = document.getElementById("chat-log");
+  const chatInput = document.getElementById("chat-input");
+  const btnSendChat = document.getElementById("btn-send-chat");
+  const geminiKeyInput = document.getElementById("gemini-key-input");
+  const btnSaveKey = document.getElementById("btn-save-key");
+
+  // Load key on start
+  let geminiApiKey = "";
+  try {
+    geminiApiKey = localStorage.getItem("gemini_api_key") || "";
+    if (geminiKeyInput && geminiApiKey) {
+      geminiKeyInput.value = geminiApiKey;
+    }
+  } catch (e) {
+    console.warn("Could not load API key from localStorage:", e);
+  }
+
+  // Save key listener
+  if (btnSaveKey && geminiKeyInput) {
+    btnSaveKey.addEventListener("click", () => {
+      const key = geminiKeyInput.value.trim();
+      if (!key) {
+        alert("Please enter a valid API key.");
+        return;
+      }
+      try {
+        localStorage.setItem("gemini_api_key", key);
+        geminiApiKey = key;
+        alert("Gemini API key saved successfully!");
+        appendSystemMessage("System Settings", "API Key updated. You can now start chatting with your AI Counsellor.");
+      } catch (e) {
+        alert("Failed to save key in local storage. Please check browser permissions.");
+      }
+    });
+  }
+
+  // Helper to append messages
+  function appendMessage(sender, text, type) {
+    if (!chatLog) return;
+    const msgDiv = document.createElement("div");
+    msgDiv.className = `chat-message ${type}`;
+    
+    // Simple custom markdown parser (bold **text** and lists)
+    let formattedText = text
+      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.*?)\*/g, "<em>$1</em>")
+      .replace(/\n/g, "<br>");
+
+    msgDiv.innerHTML = `
+      <div class="chat-message-header">${sender}</div>
+      <div>${formattedText}</div>
+    `;
+    chatLog.appendChild(msgDiv);
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+
+  function appendSystemMessage(sender, text) {
+    if (!chatLog) return;
+    const sysDiv = document.createElement("div");
+    sysDiv.style.alignSelf = "center";
+    sysDiv.style.fontSize = "0.8rem";
+    sysDiv.style.color = "hsl(var(--text-muted))";
+    sysDiv.style.backgroundColor = "hsl(var(--bg-surface) / 0.4)";
+    sysDiv.style.padding = "6px 14px";
+    sysDiv.style.borderRadius = "20px";
+    sysDiv.style.border = "1px solid hsl(var(--border-glass))";
+    sysDiv.style.margin = "8px 0";
+    sysDiv.innerHTML = `<strong>${sender}</strong>: ${text}`;
+    chatLog.appendChild(sysDiv);
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+
+  function showLoading() {
+    if (!chatLog) return null;
+    const loadDiv = document.createElement("div");
+    loadDiv.className = "chat-message ai";
+    loadDiv.id = "ai-loading-bubble";
+    loadDiv.innerHTML = `
+      <div class="chat-message-header">AI Counsellor</div>
+      <div class="ai-loading-dots">
+        <div class="ai-loading-dot"></div>
+        <div class="ai-loading-dot"></div>
+        <div class="ai-loading-dot"></div>
+      </div>
+    `;
+    chatLog.appendChild(loadDiv);
+    chatLog.scrollTop = chatLog.scrollHeight;
+    return loadDiv;
+  }
+
+  function removeLoading() {
+    const el = document.getElementById("ai-loading-bubble");
+    if (el) el.remove();
+  }
+
+  // Welcome message helper
+  function loadWelcomeMessage() {
+    if (!chatLog) return;
+    chatLog.innerHTML = "";
+    
+    const score = scoreInput ? scoreInput.value : 600;
+    const state = stateSelect ? stateSelect.value : "your state";
+    const category = categorySelect ? categorySelect.value : "General";
+    
+    let welcomeText = `Hello! I am your AI NEET Counselling Assistant. 
+    I am ready to help you analyze your admission options. 
+    
+    Based on your currently selected parameters:
+    - **NEET Score**: ${score}
+    - **Domicile State**: ${state}
+    - **Category**: ${category}
+    
+    Paste your Gemini API key on the right-hand panel, then ask me questions like:
+    1. *"What government medical colleges can I get with my rank?"*
+    2. *"How does choice locking upgrade work for state quota?"*
+    3. *"What was the closing cutoff of MAMC in my category?"*`;
+    
+    appendMessage("AI Counsellor", welcomeText, "ai");
+  }
+
+  // Call welcome message on load
+  loadWelcomeMessage();
+
+  // Re-trigger welcome message when overview inputs change to sync values
+  if (btnPredict) {
+    btnPredict.addEventListener("click", () => {
+      if (chatLog && chatLog.children.length <= 1) {
+        loadWelcomeMessage();
+      }
+    });
+  }
+
+  // Send chat logic
+  async function handleSendChat() {
+    if (!chatInput) return;
+    const query = chatInput.value.trim();
+    if (!query) return;
+
+    if (!geminiApiKey) {
+      alert("Please save a Gemini API Key on the settings panel first!");
+      switchTab("tab-ai"); 
+      return;
+    }
+
+    // Append User message
+    appendMessage("Student", query, "user");
+    chatInput.value = "";
+
+    // Show loader
+    showLoading();
+
+    // Retrieve state settings for prompt injection
+    const score = scoreInput ? scoreInput.value : "Not specified";
+    const category = categorySelect ? categorySelect.value : "GEN";
+    const state = stateSelect ? stateSelect.value : "Not specified";
+    
+    const rank23 = lastPredictedRanks[2023] ? lastPredictedRanks[2023].toLocaleString("en-IN") : "Not calculated";
+    const rank24 = lastPredictedRanks[2024] ? lastPredictedRanks[2024].toLocaleString("en-IN") : "Not calculated";
+    const rank26 = lastPredictedRanks[2026] ? lastPredictedRanks[2026].toLocaleString("en-IN") : "Not calculated";
+
+    const systemInstruction = `You are a knowledgeable and empathetic AI NEET UG Admission Counsellor. Your goal is to guide students on cutoffs, reservations, choice filling, college selection, and counseling procedures for MBBS, BDS, and AYUSH courses in India.
+    The student currently has these metrics:
+    - NEET Score: ${score}
+    - Predicted 2024 Rank: ${rank24}
+    - Predicted 2023 Rank: ${rank23}
+    - Projected 2026 Rank: ${rank26}
+    - Category: ${category}
+    - Domicile State: ${state}
+    
+    Be extremely clear, precise, and supportive. Use markdown formatting (bullet points, bold text) when listing recommendations or cutoffs. Provide realistic, conservative assessments based on these ranks. If you suggest a college, mention if it fits their quota (AIQ 15% or State Quota 85%).`;
+
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                { text: query }
+              ]
+            }
+          ],
+          systemInstruction: {
+            parts: [
+              { text: systemInstruction }
+            ]
+          }
+        })
+      });
+
+      const data = await response.json();
+      removeLoading();
+
+      if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
+        const aiResponse = data.candidates[0].content.parts[0].text;
+        appendMessage("AI Counsellor", aiResponse, "ai");
+      } else {
+        console.error("API response structure error:", data);
+        let errMsg = "Received an empty or invalid response from the API. Please double-check your API key and network connection.";
+        if (data.error && data.error.message) {
+          errMsg = `API Error: ${data.error.message}`;
+        }
+        appendMessage("AI Counsellor", errMsg, "ai");
+      }
+    } catch (err) {
+      removeLoading();
+      console.error("Gemini API connection error:", err);
+      appendMessage("AI Counsellor", "Network Connection Error: Failed to contact the Gemini API. Please check your internet connectivity.", "ai");
+    }
+  }
+
+  if (btnSendChat) {
+    btnSendChat.addEventListener("click", handleSendChat);
+  }
+  if (chatInput) {
+    chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        handleSendChat();
+      }
+    });
+  }
+
   // --- INITIAL RENDERS ---
   renderSeatMatrix();
   renderColleges();
