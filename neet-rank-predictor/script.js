@@ -1118,20 +1118,22 @@ function initApp() {
 
     const fullPrompt = `${systemInstruction}\n\nUser Question: ${query}`;
 
-    const modelsToTry = [
-      "gemini-1.5-flash",
-      "gemini-1.5-pro",
-      "gemini-pro"
+    const modelVersionsToTry = [
+      { name: "gemini-1.5-flash", version: "v1beta" },
+      { name: "gemini-1.5-flash", version: "v1" },
+      { name: "gemini-1.5-pro", version: "v1beta" },
+      { name: "gemini-1.5-pro", version: "v1" },
+      { name: "gemini-pro", version: "v1beta" }
     ];
 
     let success = false;
     let aiResponseText = "";
     let apiErrorDetail = "";
 
-    for (const modelName of modelsToTry) {
+    for (const item of modelVersionsToTry) {
       try {
-        console.log(`Attempting connection with model: ${modelName}`);
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/${modelName}:generateContent?key=${geminiApiKey}`, {
+        console.log(`Attempting connection: ${item.name} via ${item.version}`);
+        const response = await fetch(`https://generativelanguage.googleapis.com/${item.version}/models/${item.name}:generateContent?key=${geminiApiKey}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -1155,15 +1157,13 @@ function initApp() {
           break; // Exit loop on success
         } else {
           const errMsg = data.error && data.error.message ? data.error.message : "Invalid response payload";
-          console.warn(`Model ${modelName} call failed: ${errMsg}`);
-          apiErrorDetail = errMsg;
+          console.warn(`Model ${item.name} (${item.version}) call failed: ${errMsg}`);
+          apiErrorDetail = `${item.name} (${item.version}): ${errMsg}`;
         }
       } catch (err) {
-        console.warn(`Fetch error for ${modelName}:`, err);
-        apiErrorDetail = err.message || "Network request failed";
+        console.warn(`Fetch error for ${item.name} (${item.version}):`, err);
+        apiErrorDetail = `${item.name} (${item.version}): ${err.message || "Network request failed"}`;
       }
-    }
-
     removeLoading();
 
     if (success) {
