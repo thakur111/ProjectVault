@@ -1116,6 +1116,8 @@ function initApp() {
     
     Be extremely clear, precise, and supportive. Use markdown formatting (bullet points, bold text) when listing recommendations or cutoffs. Provide realistic, conservative assessments based on these ranks. If you suggest a college, mention if it fits their quota (AIQ 15% or State Quota 85%).`;
 
+    const fullPrompt = `${systemInstruction}\n\nUser Question: ${query}`;
+
     try {
       const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
         method: "POST",
@@ -1126,15 +1128,10 @@ function initApp() {
           contents: [
             {
               parts: [
-                { text: query }
+                { text: fullPrompt }
               ]
             }
-          ],
-          systemInstruction: {
-            parts: [
-              { text: systemInstruction }
-            ]
-          }
+          ]
         })
       });
 
