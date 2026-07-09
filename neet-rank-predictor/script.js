@@ -1164,6 +1164,7 @@ function initApp() {
         console.warn(`Fetch error for ${item.name} (${item.version}):`, err);
         apiErrorDetail = `${item.name} (${item.version}): ${err.message || "Network request failed"}`;
       }
+    }
     removeLoading();
 
     if (success) {
