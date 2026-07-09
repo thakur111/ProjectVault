@@ -836,9 +836,9 @@ function initApp() {
 
     const modelFilter = predSelectModel ? predSelectModel.value : "2026";
     
-    // Auto-update rankVal display if we have a saved rank for the selected model
-    if (lastPredictedRanks && lastPredictedRanks[modelFilter]) {
-      predRankInput.value = lastPredictedRanks[modelFilter];
+    // Auto-save the user-entered rank to lastPredictedRanks so it persists when switching tabs
+    if (!isNaN(parseInt(predRankInput.value))) {
+      lastPredictedRanks[modelFilter] = parseInt(predRankInput.value);
     }
 
     const rankVal = parseInt(predRankInput.value);
@@ -985,9 +985,23 @@ function initApp() {
     });
   });
 
+  // Bind change listeners to all college predictor filters for instant updates
+  [predSelectCategory, predSelectState, predSelectType].forEach(el => {
+    if (el) el.addEventListener("change", renderColleges);
+  });
+  if (predRankInput) {
+    predRankInput.addEventListener("input", renderColleges);
+  }
+
   // Bind model change listener in college predictor
   if (predSelectModel) {
-    predSelectModel.addEventListener("change", renderColleges);
+    predSelectModel.addEventListener("change", () => {
+      const model = predSelectModel.value;
+      if (lastPredictedRanks && lastPredictedRanks[model]) {
+        predRankInput.value = lastPredictedRanks[model];
+      }
+      renderColleges();
+    });
   }
 
   // --- AI ASSISTANT CHAT ENGINE ---
