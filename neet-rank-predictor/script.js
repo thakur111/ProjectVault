@@ -942,6 +942,16 @@ function initApp() {
         </div>
       `;
       collegeListContainer.appendChild(card);
+
+      if (typeof VanillaTilt !== 'undefined') {
+        VanillaTilt.init(card, {
+          max: 5,
+          speed: 400,
+          glare: true,
+          "max-glare": 0.1,
+          scale: 1.02
+        });
+      }
     });
   }
 
@@ -1290,6 +1300,17 @@ function initApp() {
     populateStateDropdowns();
     renderSeatMatrix();
     renderColleges();
+    
+    // Initialize 3D card tilt effects
+    if (typeof VanillaTilt !== 'undefined') {
+      VanillaTilt.init(document.querySelectorAll(".card"), {
+        max: 3,
+        speed: 400,
+        glare: true,
+        "max-glare": 0.08,
+        scale: 1.01
+      });
+    }
   });
 }
 

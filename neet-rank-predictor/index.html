@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- 3D WebGL Background Canvas -->
+  <canvas id="bg-canvas"></canvas>
 
   <!-- Header Section -->
   <header>
@@ -700,11 +702,15 @@
         <a href="https://mcc.nic.in" target="_blank" rel="noopener">MCC Official Portal</a>
         <a href="https://www.nmc.org.in" target="_blank" rel="noopener">NMC official Portal</a>
         <a href="https://neet.nta.nic.in" target="_blank" rel="noopener">NTA NEET website</a>
-      </div>
       <p>&copy; 2026 NEET Rank Master. All predictions are estimations based on historical statistical results. Official counselling registers are issued solely by NTA & MCC.</p>
     </div>
   </footer>
 
+  <!-- 3D Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+  <script src="3d-background.js"></script>
+  
   <script src="script.js"></script>
 </body>
 </html>
