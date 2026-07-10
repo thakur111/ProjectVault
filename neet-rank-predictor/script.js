@@ -1214,16 +1214,20 @@ function initApp() {
     const fullPrompt = `${systemInstruction}\n\nUser Question: ${query}`;
 
     const modelVersionsToTry = [
+      { name: "gemini-2.0-flash", version: "v1beta" },
       { name: "gemini-1.5-flash", version: "v1beta" },
       { name: "gemini-1.5-flash", version: "v1" },
+      { name: "gemini-1.5-flash-8b", version: "v1beta" },
       { name: "gemini-1.5-pro", version: "v1beta" },
       { name: "gemini-1.5-pro", version: "v1" },
+      { name: "gemini-1.0-pro", version: "v1beta" },
       { name: "gemini-pro", version: "v1beta" }
     ];
 
     let success = false;
     let aiResponseText = "";
     let apiErrorDetail = "";
+    let allErrors = [];
 
     for (const item of modelVersionsToTry) {
       try {
@@ -1253,11 +1257,11 @@ function initApp() {
         } else {
           const errMsg = data.error && data.error.message ? data.error.message : "Invalid response payload";
           console.warn(`Model ${item.name} (${item.version}) call failed: ${errMsg}`);
-          apiErrorDetail = `${item.name} (${item.version}): ${errMsg}`;
+          allErrors.push(`${item.name}: ${errMsg}`);
         }
       } catch (err) {
         console.warn(`Fetch error for ${item.name} (${item.version}):`, err);
-        apiErrorDetail = `${item.name} (${item.version}): ${err.message || "Network request failed"}`;
+        allErrors.push(`${item.name}: ${err.message || "Network error"}`);
       }
     }
     removeLoading();
@@ -1265,7 +1269,7 @@ function initApp() {
     if (success) {
       appendMessage("AI Counsellor", aiResponseText, "ai");
     } else {
-      let finalErrMsg = `API Error: The models (gemini-1.5-flash, gemini-1.5-pro, gemini-pro) are not supported by your API key. Details: ${apiErrorDetail}`;
+      let finalErrMsg = `API Error: None of the models are supported by your API key or region. Details:\n\n${allErrors.join("\n")}\n\nPlease ensure your API key is active and has access to Gemini 1.5 Flash.`;
       appendMessage("AI Counsellor", finalErrMsg, "ai");
     }
   }
